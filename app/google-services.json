@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "1083766126255",
+    "firebase_url": "https://udhari-arb222.firebaseio.com",
+    "project_id": "udhari-arb222",
+    "storage_bucket": "udhari-arb222.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1083766126255:android:ce4c86d5ba9d8f8d",
+        "android_client_info": {
+          "package_name": "com.arb222.udhari"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1083766126255-3d8rk5gdcsd4saai0d8cjk6dbng9krbl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_88w0Ea-l1FZniNAFIqa6ZDIFAAO3svc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1083766126255-3d8rk5gdcsd4saai0d8cjk6dbng9krbl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
