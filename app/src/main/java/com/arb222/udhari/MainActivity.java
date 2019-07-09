@@ -1,10 +1,15 @@
 package com.arb222.udhari;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,5 +31,22 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
+
+    }
+    private void updateUI(FirebaseUser currentUser) {
+
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null){
+            Toast.makeText(MainActivity.this,"Logged In",Toast.LENGTH_LONG).show();
+        }
+        else{
+            Intent intent = new Intent(MainActivity.this,PhoneNoEntryActivity.class);
+            startActivity(intent);
+        }
     }
 }
