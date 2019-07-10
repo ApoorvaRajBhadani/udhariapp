@@ -12,5 +12,10 @@
         android:text="Profile Fragment"
         android:textSize="20sp"
         />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Update Profile"
+        android:id="@+id/update_profile_openactivity_button"/>
 
 </LinearLayout>

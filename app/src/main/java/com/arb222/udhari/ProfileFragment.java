@@ -1,5 +1,6 @@
 package com.arb222.udhari;
 
+import android.content.Intent;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +27,7 @@ public class ProfileFragment extends Fragment {
     private DatabaseReference userinfoDatabaseReference;
     private UserInfo currentUserInfo;
     private TextView textViewProfileFragment;
+    private Button mOpenUpdateProfileActivityButton;
     public ProfileFragment() {
     }
 
@@ -33,6 +36,7 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile,container,false);
         textViewProfileFragment = (TextView) view.findViewById(R.id.profile_details);
+        mOpenUpdateProfileActivityButton = (Button) view.findViewById(R.id.update_profile_openactivity_button);
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
         currentUserInfo = new UserInfo();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -48,6 +52,12 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        mOpenUpdateProfileActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),UpdateProfile.class));
             }
         });
         updateUi();
