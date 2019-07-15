@@ -117,9 +117,10 @@ public class OTPVerificationActivity extends AppCompatActivity {
     }
 
     private void createUserinfoData() {
-        UserInfo userInfoPOJO = new UserInfo(phoneNumber, "NA", "", "NA", 1);
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         String currentUserUid = currentUser.getUid();
+        UserInfo userInfoPOJO = new UserInfo(phoneNumber, "NA", "", "NA", 1,currentUserUid);
+
         userinfoDatabaseReference.child(currentUserUid)
                 .setValue(userInfoPOJO);
     }
