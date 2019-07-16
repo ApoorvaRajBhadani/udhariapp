@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.AddContact;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,7 +22,6 @@ public class CountryToPhonePrefix {
         country2phone.put("AM", "+374");
         country2phone.put("AU", "+61");
         country2phone.put("AT", "+43");
-        country2phone.put("AZ", "+994");
         country2phone.put("BS", "+1-242");
         country2phone.put("BH", "+973");
         country2phone.put("BD", "+880");
@@ -56,7 +55,6 @@ public class CountryToPhonePrefix {
         country2phone.put("CI", "+225");
         country2phone.put("HR", "+385");
         country2phone.put("CU", "+53");
-        country2phone.put("CY", "+357");
         country2phone.put("CZ", "+420");
         country2phone.put("DK", "+45");
         country2phone.put("DJ", "+253");
@@ -205,20 +203,15 @@ public class CountryToPhonePrefix {
         country2phone.put("YE", "+967");
         country2phone.put("ZM", "+260");
         country2phone.put("ZW", "+263");
-        country2phone.put("GE", "+995");
         country2phone.put("TW", "+886");
         country2phone.put("AZ", "+374-97");
         country2phone.put("CY", "+90-392");
-        country2phone.put("MD", "+373-533");
-        country2phone.put("SO", "+252");
-        country2phone.put("GE", "+995");
         country2phone.put("CX", "+61");
         country2phone.put("CC", "+61");
         country2phone.put("NF", "+672");
         country2phone.put("NC", "+687");
         country2phone.put("PF", "+689");
         country2phone.put("YT", "+262");
-        country2phone.put("GP", "+590");
         country2phone.put("GP", "+590");
         country2phone.put("PM", "+508");
         country2phone.put("WF", "+681");
@@ -249,7 +242,6 @@ public class CountryToPhonePrefix {
         country2phone.put("FO", "+298");
         country2phone.put("GL", "+299");
         country2phone.put("GF", "+594");
-        country2phone.put("GP", "+590");
         country2phone.put("MQ", "+596");
         country2phone.put("RE", "+262");
         country2phone.put("AX", "+358-18");

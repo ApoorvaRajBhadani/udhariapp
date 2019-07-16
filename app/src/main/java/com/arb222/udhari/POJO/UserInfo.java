@@ -1,7 +1,7 @@
 package com.arb222.udhari;
 
 public class UserInfo {
-    private String phoneNumber, firstName, lastName, profilePictureLink;
+    private String phoneNumber, firstName, lastName, profilePictureLink, uid;
     private int profileStatus = 0;
     // status 0 - status NA
     // status 1 - Only UID and phone no available. FirstName and ProfilePicLink NA ,,, LastName blank
@@ -9,12 +9,13 @@ public class UserInfo {
     // status 3 - UID , phone no and profile pic Available
 
 
-    public UserInfo(String phoneNumber, String firstName, String lastName, String profilePictureLink, int profileStatus) {
+    public UserInfo(String phoneNumber, String firstName, String lastName, String profilePictureLink, int profileStatus,String uid) {
         this.phoneNumber = phoneNumber;
         this.firstName = firstName;
         this.lastName = lastName;
         this.profilePictureLink = profilePictureLink;
         this.profileStatus = profileStatus;
+        this.uid = uid;
     }
 
     public String getPhoneNumber() {
@@ -31,6 +32,10 @@ public class UserInfo {
 
     public String getProfilePictureLink() {
         return profilePictureLink;
+    }
+
+    public String getUid() {
+        return uid;
     }
 
     public int getProfileStatus() {
