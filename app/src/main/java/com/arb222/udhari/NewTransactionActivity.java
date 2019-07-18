@@ -139,7 +139,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                 String notice = "";
                 if(toPayAddnl>0) notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";
-                Notification myNotif = new Notification(notice,txnId,connectedTo,connId,desc,Math.abs(toPayAddnl),timestamp);
+                Notification myNotif = new Notification(notice,txnId,connectedTo,connId,desc,Math.abs(toPayAddnl),timestamp,1);
                 updateMyNotif(myNotif);
             }
 
@@ -177,7 +177,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                 String notice = "";
                 if(toPayAddnl>0)notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";
-                Notification otherNotif = new Notification(notice,txnId,FirebaseAuth.getInstance().getCurrentUser().getUid(),connId,desc,Math.abs(toPayAddnl),timestamp);
+                Notification otherNotif = new Notification(notice,txnId,FirebaseAuth.getInstance().getCurrentUser().getUid(),connId,desc,Math.abs(toPayAddnl),timestamp,1);
                 updateOtherNotif(otherNotif,connectedTo);
             }
 

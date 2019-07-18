@@ -4,6 +4,7 @@ public class Notification {
     String notice,txnId,connection,connectionId,desc;
     double displayableAmt;
     long timestamp;
+    int status;
 
     public String getNotice() {
         return notice;
@@ -33,7 +34,9 @@ public class Notification {
         return timestamp;
     }
 
-    public Notification(String notice, String txnId, String connection, String connectionId, String desc, double displayableAmt, long timestamp) {
+    public Notification(String notice, String txnId, String connection,
+                        String connectionId, String desc, double displayableAmt,
+                        long timestamp,int status) {
         this.notice = notice;
         this.txnId = txnId;
         this.connection = connection;
@@ -41,6 +44,7 @@ public class Notification {
         this.desc = desc;
         this.displayableAmt = displayableAmt;
         this.timestamp = timestamp;
+        this.status = status;
     }
 
     public Notification() {
