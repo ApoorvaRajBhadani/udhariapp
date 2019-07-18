@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb222.udhari.R;
+import com.arb222.udhari.RejectATransaction;
 
 import java.util.List;
 
@@ -33,12 +34,22 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull NotificationViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull NotificationViewHolder holder, final int position) {
         holder.timeTextView.setText(String.valueOf(notificationModelList.get(position).getTimestamp()));
         holder.descTextView.setText(notificationModelList.get(position).getDesc());
         holder.displayableAmtTextView.setText("₹ "+notificationModelList.get(position).getDisplayableAmt());
         holder.displayNameTextView.setText(notificationModelList.get(position).getDisplayName());
         holder.noticeTextView.setText(notificationModelList.get(position).getNotice());
+        if(notificationModelList.get(position).getStatus()==3||notificationModelList.get(position).getStatus()==4||notificationModelList.get(position).getStatus()==5)
+            holder.rejectButton.setVisibility(View.GONE);
+        holder.rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RejectATransaction rejectTxnObject = new RejectATransaction();
+                rejectTxnObject.init(notificationModelList.get(position).getTxnId(),notificationModelList.get(position).getConnId());
+                rejectTxnObject.rejectATransaction(notificationModelList.get(position).getTxnId(),notificationModelList.get(position).getConnectedTo(),notificationModelList.get(position).getConnId(),notificationModelList.get(position).getStatus());
+            }
+        });
     }
 
     @Override

@@ -151,7 +151,7 @@ public class NewTransactionActivity extends AppCompatActivity {
 
     private void updateMyNotif(Notification myNotif) {
         DatabaseReference myuidUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(FirebaseAuth.getInstance().getCurrentUser().getUid().toString());
-        myuidUsernotificationRef.child(myNotif.getTimestamp()+"").setValue(myNotif);
+        myuidUsernotificationRef.child(myNotif.getTxnId()+"").setValue(myNotif);
     }
 
     private void updatePaymentOther(final String connId,final int myType,final double paidby1,final double paidby2,final double paidfor1,final double paidfor2,final String connectedTo,final String txnId,final String desc,final long timestamp){
@@ -189,6 +189,6 @@ public class NewTransactionActivity extends AppCompatActivity {
 
     private void updateOtherNotif(Notification otherNotif, String connectedTo) {
         DatabaseReference otheruidUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(connectedTo);
-        otheruidUsernotificationRef.child(otherNotif.getTimestamp()+"").setValue(otherNotif);
+        otheruidUsernotificationRef.child(otherNotif.getTxnId()+"").setValue(otherNotif);
     }
 }
