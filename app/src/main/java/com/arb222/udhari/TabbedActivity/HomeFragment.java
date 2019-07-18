@@ -28,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -54,8 +55,7 @@ public class HomeFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 connectionList.clear();
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                    UserConnection newConnection;
-                    newConnection = childSnapshot.getValue(UserConnection.class);
+                    UserConnection newConnection = childSnapshot.getValue(UserConnection.class);
                     String [] projection = {ContactContract.ContactEntry.COLUMN_DISPLAY_NAME, ContactContract.ContactEntry.COLUMN_PHONE_NUMBER};
                     String selection = ContactContract.ContactEntry.COLUMN_UID+"=?";
                     String [] selectionArgs = {newConnection.getConnectedTo()};
@@ -76,8 +76,10 @@ public class HomeFragment extends Fragment {
                             R.mipmap.ic_launcher,
                             newConnection.getLastContacted());
                     connectionList.add(newConnectionValue);
-                    adapter.notifyDataSetChanged();
+
                 }
+                Collections.sort(connectionList,Connection.BY_LAST_CONTACTED);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

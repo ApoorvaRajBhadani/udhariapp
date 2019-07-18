@@ -1,5 +1,7 @@
 package com.arb222.udhari.Connection;
 
+import java.util.Comparator;
+
 public class Connection {
     String connectedTo,phoneNumber,displayName,connectionId;
     int myType,profilepicresid;
@@ -28,6 +30,19 @@ public class Connection {
     public long getLastContacted() {
         return lastContacted;
     }
+
+    public static final Comparator<Connection> BY_LAST_CONTACTED = new Comparator<Connection>() {
+        @Override
+        public int compare(Connection o1, Connection o2) {
+            if(o1.getLastContacted() < o2.getLastContacted()){
+                return 1;
+            }else if (o1.getLastContacted() > o2.getLastContacted()){
+                return -1;
+            }else {
+                return 0;
+            }
+        }
+    };
 
     public String getConnectedTo() {
         return connectedTo;
