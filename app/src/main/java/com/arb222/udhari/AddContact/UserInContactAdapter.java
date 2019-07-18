@@ -59,9 +59,10 @@ public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdap
             @Override
             public void onClick(View v) {
                 if(userList.get(position).getConnectionId().equals("NA")){
-                    UserConnection type1 = new UserConnection(userList.get(position).getUid(),newConnectionId,userList.get(position).getPhoneNumber(),1,0);
+                    long timestamp = System.currentTimeMillis();
+                    UserConnection type1 = new UserConnection(userList.get(position).getUid(),newConnectionId,userList.get(position).getPhoneNumber(),1,0,timestamp);
                     currentUserconnectionref.child(newConnectionId).setValue(type1);
-                    UserConnection type2 = new UserConnection(myUid,newConnectionId,FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().toString(),2,0);
+                    UserConnection type2 = new UserConnection(myUid,newConnectionId,FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().toString(),2,0,timestamp);
                     connectionUserconnectionref.child(newConnectionId).setValue(type2);
                     Log.d("Adapter","Created");
 

@@ -135,6 +135,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                     toPayAddnl = paidfor2-paidby2;
                 }
                 myUserconnectionRef.child(connId).child("pay").setValue(initialPay+toPayAddnl);
+                myUserconnectionRef.child(connId).child("lastContacted").setValue(timestamp);
                 String notice = "";
                 if(toPayAddnl>0) notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";
@@ -172,6 +173,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                     toPayAddnl = paidfor1 - paidby1;
                 }
                 otherUserconnectionRef.child(connId).child("pay").setValue(initialPay+toPayAddnl);
+                otherUserconnectionRef.child(connId).child("lastContacted").setValue(timestamp);
                 String notice = "";
                 if(toPayAddnl>0)notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";

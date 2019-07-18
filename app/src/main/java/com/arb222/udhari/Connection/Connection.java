@@ -4,6 +4,7 @@ public class Connection {
     String connectedTo,phoneNumber,displayName,connectionId;
     int myType,profilepicresid;
     double toPay;
+    long lastContacted;
 
     public Connection(){
 
@@ -13,7 +14,7 @@ public class Connection {
         return profilepicresid;
     }
 
-    public Connection(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, int profilepicresid) {
+    public Connection(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, int profilepicresid,long lastContacted) {
         this.connectedTo = connectedTo;
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
@@ -21,6 +22,11 @@ public class Connection {
         this.myType = myType;
         this.toPay = toPay;
         this.profilepicresid = profilepicresid;
+        this.lastContacted = lastContacted;
+    }
+
+    public long getLastContacted() {
+        return lastContacted;
     }
 
     public String getConnectedTo() {

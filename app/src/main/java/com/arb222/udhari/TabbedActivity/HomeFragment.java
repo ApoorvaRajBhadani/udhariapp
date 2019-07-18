@@ -65,7 +65,7 @@ public class HomeFragment extends Fragment {
                         contactData.moveToPosition(0);
                         displayName = contactData.getString(contactData.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME));
                     }else {
-                        displayName = newConnection.getConnectedToPhoneNumber().toString();
+                        displayName = newConnection.getConnectedToPhoneNumber();
                     }
                     Connection newConnectionValue = new Connection(newConnection.getConnectedTo(),
                             newConnection.getConnectedToPhoneNumber(),
@@ -73,7 +73,8 @@ public class HomeFragment extends Fragment {
                             newConnection.getConnectionId(),
                             newConnection.getMyType(),
                             newConnection.getPay(),
-                            R.mipmap.ic_launcher);
+                            R.mipmap.ic_launcher,
+                            newConnection.getLastContacted());
                     connectionList.add(newConnectionValue);
                     adapter.notifyDataSetChanged();
                 }
