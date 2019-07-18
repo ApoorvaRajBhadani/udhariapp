@@ -1,5 +1,6 @@
 package com.arb222.udhari.TabbedActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,12 +15,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.arb222.udhari.AddContact.FindActiveUsersActivity;
 import com.arb222.udhari.Connection.Connection;
 import com.arb222.udhari.Connection.ConnectionAdapter;
 import com.arb222.udhari.ContactDB.ContactContract;
 import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.arb222.udhari.R;
 import com.arb222.udhari.POJO.UserConnection;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,6 +37,8 @@ import java.util.List;
 public class HomeFragment extends Fragment {
     View view;
     private RecyclerView connectionRecyclerView;
+    private FloatingActionButton fab;
+
     private List<Connection> connectionList = new ArrayList<>();
     ContactDbHelper contactDbHelper;
 
@@ -46,6 +51,15 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_home, container, false);
         connectionRecyclerView = (RecyclerView) view.findViewById(R.id.connection_recyclerview);
+        fab = (FloatingActionButton) view.findViewById(R.id.new_connection_fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(), FindActiveUsersActivity.class));
+            }
+        });
+
         final ConnectionAdapter  adapter= new ConnectionAdapter(getContext(),connectionList);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("userconnection").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         contactDbHelper = new ContactDbHelper(getActivity());

@@ -15,7 +15,6 @@ import com.arb222.udhari.R;
 
 public class NotificationsFragment extends Fragment {
     View view;
-    private Button mAddContactsButton;
 
     public NotificationsFragment() {
     }
@@ -24,16 +23,6 @@ public class NotificationsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
        view = inflater.inflate(R.layout.fragment_notifications,container,false);
-        mAddContactsButton = view.findViewById(R.id.add_contact_button);
-        mAddContactsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                startActivity(new Intent(getContext(), FindActiveUsersActivity.class));
-
-
-            }
-        });
         return view;
     }
 }
