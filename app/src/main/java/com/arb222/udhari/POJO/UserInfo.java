@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.POJO;
 
 public class UserInfo {
     private String phoneNumber, firstName, lastName, profilePictureLink, uid;

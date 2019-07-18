@@ -1,5 +1,9 @@
 package com.arb222.udhari.AddContact;
 
+import android.content.ContentValues;
+import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,21 +13,23 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.arb222.udhari.Connection;
+import com.arb222.udhari.ContactDB.ContactContract;
+import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.arb222.udhari.R;
-import com.arb222.udhari.UserConnection;
-import com.arb222.udhari.UserInfo;
+import com.arb222.udhari.POJO.UserConnection;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
-public class UserInContactsAdapter extends RecyclerView.Adapter<UserInContactsAdapter.UserListRecyclerViewHolder> {
+public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdapter.UserListRecyclerViewHolder> {
 
-    ArrayList<UserInContacts> userList;
+    ArrayList<UserInContact> userList;
+    ContactDbHelper contactDbHelper;
+    Context context;
 
-    public UserInContactsAdapter(ArrayList<UserInContacts> userList) {
+    public UserInContactAdapter(ArrayList<UserInContact> userList) {
         this.userList = userList;
     }
 
@@ -34,27 +40,42 @@ public class UserInContactsAdapter extends RecyclerView.Adapter<UserInContactsAd
                 .inflate(R.layout.active_user_card, null, false);
         RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         layoutView.setLayoutParams(lp);
-
+        context = parent.getContext();
+        contactDbHelper = new ContactDbHelper(parent.getContext());
         UserListRecyclerViewHolder rcv = new UserListRecyclerViewHolder(layoutView);
         return rcv;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull UserInContactsAdapter.UserListRecyclerViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull UserInContactAdapter.UserListRecyclerViewHolder holder, final int position) {
         holder.nameTextView.setText(userList.get(position).getDisplayName());
         holder.phoneTextView.setText(userList.get(position).getPhoneNumber());
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference currentUserconnectionref = holder.UserConnectionRef.child(myUid);
         final DatabaseReference connectionUserconnectionref = holder.UserConnectionRef.child(userList.get(position).getUid());
         final String newConnectionId = myUid+"@+@"+userList.get(position).getUid();
+
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(userList.get(position).getConnectionId()=="NA"){
+                if(userList.get(position).getConnectionId().equals("NA")){
                     UserConnection type1 = new UserConnection(userList.get(position).getUid(),newConnectionId,userList.get(position).getPhoneNumber(),1,0);
                     currentUserconnectionref.child(newConnectionId).setValue(type1);
                     UserConnection type2 = new UserConnection(myUid,newConnectionId,FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().toString(),2,0);
                     connectionUserconnectionref.child(newConnectionId).setValue(type2);
+                    Log.d("Adapter","Created");
+
+                    SQLiteDatabase db= contactDbHelper.getWritableDatabase();
+                    ContentValues value = new ContentValues();
+                    value.put(ContactContract.ContactEntry.COLUMN_CONNECTION_ID,newConnectionId);
+                    String [] whereArgs = {userList.get(position).getUid()};
+                    db.update(ContactContract.ContactEntry.TABLE_NAME,value, ContactContract.ContactEntry.COLUMN_UID+"=?",whereArgs);
+                    Log.d("Adapter","DB updated");
+                    ((FindActiveUsersActivity)context).finish();
+                }
+                else {
+                    Log.d("Adapter","user already present");
+                    ((FindActiveUsersActivity)context).finish();
                 }
             }
         });

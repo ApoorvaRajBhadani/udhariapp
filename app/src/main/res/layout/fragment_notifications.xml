@@ -5,6 +5,11 @@
     android:gravity="center"
     android:orientation="vertical">
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Add Contact"
+        android:id="@+id/add_contact_button"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

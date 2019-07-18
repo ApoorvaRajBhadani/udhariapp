@@ -1,12 +1,12 @@
 package com.arb222.udhari.AddContact;
 
-public class UserInContacts {
+public class UserInContact {
 
     private String displayName,phoneNumber,uid,connectionId;
     //Connection ID only if already connected
 
 
-    public UserInContacts(String displayName, String phoneNumber, String uid, String connectionId) {
+    public UserInContact(String displayName, String phoneNumber, String uid, String connectionId) {
         this.displayName = displayName;
         this.phoneNumber = phoneNumber;
         this.uid = uid;

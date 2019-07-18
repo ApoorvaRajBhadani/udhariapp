@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.ContactDB;
 
 import android.provider.BaseColumns;
 

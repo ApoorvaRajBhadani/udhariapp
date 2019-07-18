@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.Connection;
 
 public class Connection {
     String connectedTo,phoneNumber,displayName,connectionId;

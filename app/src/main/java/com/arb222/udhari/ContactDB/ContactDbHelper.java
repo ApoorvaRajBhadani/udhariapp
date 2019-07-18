@@ -1,10 +1,9 @@
-package com.arb222.udhari;
+package com.arb222.udhari.ContactDB;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import com.arb222.udhari.ContactContract.ContactEntry;
-import androidx.annotation.Nullable;
+import com.arb222.udhari.ContactDB.ContactContract.ContactEntry;
 
 public class ContactDbHelper  extends SQLiteOpenHelper {
 

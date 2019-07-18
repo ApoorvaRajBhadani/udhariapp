@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.ContactDB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -10,10 +10,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.arb222.udhari.AddContact.CountryToPhonePrefix;
 import com.arb222.udhari.AddContact.UserInContact;
 import com.arb222.udhari.ContactDB.ContactContract.ContactEntry;
-import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

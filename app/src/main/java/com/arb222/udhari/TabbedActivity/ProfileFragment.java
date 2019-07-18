@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.TabbedActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +14,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.arb222.udhari.R;
+import com.arb222.udhari.UpdateProfile;
+import com.arb222.udhari.POJO.UserInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -47,11 +49,11 @@ public class ProfileFragment extends Fragment {
         currentUserInfo = new UserInfo();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final String currentUserUid = currentUser.getUid();
-        userinfoDatabaseReference.child(currentUserUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        userinfoDatabaseReference.child(currentUserUid).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 currentUserInfo = dataSnapshot.getValue(UserInfo.class);
-                Log.d("Test", currentUserInfo.getPhoneNumber());
+                Log.d("Profile Fragment", currentUserInfo.getPhoneNumber());
                 updateUi();
             }
 
@@ -72,7 +74,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUi() {
-        textViewProfileFragment.setText("Name :" + currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName() + "\nPhNo " + currentUserInfo.getPhoneNumber() + "\nStatus " + currentUserInfo.getProfileStatus() + "\nDp url " + currentUserInfo.getProfilePictureLink());
+        textViewProfileFragment.setText("UID :"+currentUserInfo.getUid()+"\nName :" + currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName() + "\nPhNo " + currentUserInfo.getPhoneNumber() + "\nStatus " + currentUserInfo.getProfileStatus() + "\nDp url " + currentUserInfo.getProfilePictureLink());
         if (currentUserInfo.getProfileStatus() == 3) {
             Picasso.get().load(currentUserInfo.getProfilePictureLink())
                     .placeholder(R.mipmap.ic_launcher)
@@ -81,4 +83,5 @@ public class ProfileFragment extends Fragment {
                     .into(profilePicImageView);
         }
     }
+
 }

@@ -8,6 +8,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
+import com.arb222.udhari.AddContact.UserInContact;
+import com.arb222.udhari.AddContact.UserInContactAdapter;
 import com.arb222.udhari.ContactDB.ContactContract;
 import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.arb222.udhari.R;

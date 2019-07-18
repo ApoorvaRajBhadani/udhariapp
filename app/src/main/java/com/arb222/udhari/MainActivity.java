@@ -1,35 +1,46 @@
 package com.arb222.udhari;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.arb222.udhari.ContactDB.ContactContract;
+import com.arb222.udhari.ContactDB.ContactDbHelper;
+import com.arb222.udhari.ContactDB.UpdateContactDb;
+import com.arb222.udhari.TabbedActivity.HomeFragment;
+import com.arb222.udhari.TabbedActivity.NotificationsFragment;
+import com.arb222.udhari.TabbedActivity.ProfileFragment;
+import com.arb222.udhari.TabbedActivity.ViewPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
+import android.Manifest;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.Menu;
 
 public class MainActivity extends AppCompatActivity {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private ContactDbHelper contactDbHelper;
 
 
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity,menu);
+        return true;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS, Manifest.permission.READ_CONTACTS}, 1);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
-
+        contactDbHelper = new ContactDbHelper(this);
 
 
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
@@ -50,23 +61,17 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
-    }
+        SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
+        Cursor userInContactDb = contactDb.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,null);
+        if(userInContactDb.getCount()==0){
+            UpdateContactDb updateContactDb = new UpdateContactDb();
+            updateContactDb.initializeContactDb(this);
+        }
+        userInContactDb.close(); }
 
     private void updateUI(FirebaseUser currentUser) {
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            //Toast.makeText(MainActivity.this,FirebaseAuth.getInstance().getCurrentUser().getUid(),Toast.LENGTH_LONG).show();
 
-
-        } else {
-            Intent intent = new Intent(MainActivity.this, PhoneNoEntryActivity.class);
-            startActivity(intent);
-        }
-    }
 }

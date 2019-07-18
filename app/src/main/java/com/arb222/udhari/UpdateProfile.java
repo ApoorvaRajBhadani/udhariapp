@@ -158,6 +158,7 @@ public class UpdateProfile extends AppCompatActivity {
                                     userDataFolderReference.child("profileStatus").setValue(3);
                                 }
                             });
+                            finish();
 
                         }
                     }).addOnFailureListener(new OnFailureListener() {

@@ -1,6 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="10dp"
+    android:orientation="vertical">
 
-</LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/connection_profilepic_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/ic_launcher" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Display Name"
+            android:id="@+id/connection_displayname_textview"
+            android:textSize="25sp"
+            android:textColor="#ffffff"
+            android:layout_alignBottom="@id/connection_profilepic_imageview"/>
+
+        <LinearLayout
+            android:layout_below="@id/connection_profilepic_imageview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:text="To Pay ₹100"
+                android:id="@+id/connection_topay_textview"
+                android:textSize="30sp"
+                android:layout_height="50dp" />
+            <ImageView
+                android:id="@+id/connection_addtransaction_imagebutton"
+                android:clickable="true"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_weight="0"
+                android:src="@drawable/ic_add_box"/>
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,4 +1,4 @@
-package com.arb222.udhari;
+package com.arb222.udhari.Authentication;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+
+import com.arb222.udhari.R;
 
 public class PhoneNoEntryActivity extends AppCompatActivity {
 
@@ -30,7 +32,7 @@ public class PhoneNoEntryActivity extends AppCompatActivity {
                     return;
                 }
 
-                Intent intent = new Intent(PhoneNoEntryActivity.this,OTPVerificationActivity.class);
+                Intent intent = new Intent(PhoneNoEntryActivity.this, OTPVerificationActivity.class);
                 intent.putExtra("phonenumber",number);
                 startActivity(intent);
             }
