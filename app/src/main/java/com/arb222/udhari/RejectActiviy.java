@@ -1,8 +1,11 @@
 package com.arb222.udhari;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
 
 import com.arb222.udhari.POJO.Notification;
 import com.arb222.udhari.POJO.Transaction;
@@ -13,28 +16,35 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class RejectATransaction {
+public class RejectActiviy extends AppCompatActivity {
 
     private int rejectingUserType = 0;
     private Transaction originalTxn;
 
-    public void init(String originalTxnId,String connId){
+    public void init(final String originalTxnId, final String connId, final String connectedTo, final int status){
+        Toast.makeText(RejectActiviy.this,"init",Toast.LENGTH_SHORT).show();
         DatabaseReference rejectingUserConcnsRef = FirebaseDatabase.getInstance().getReference("userconnection").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         rejectingUserConcnsRef.child(connId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 rejectingUserType = Integer.parseInt(dataSnapshot.child("myType").getValue().toString());
+                init2(originalTxnId,connId,connectedTo,status);
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
             }
         });
+
+    }
+
+    public void init2(final String originalTxnId, final String connId, final String connectedTo, final int status){
         DatabaseReference txnsOfConnIdRef = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
         txnsOfConnIdRef.child(originalTxnId).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 originalTxn = dataSnapshot.getValue(Transaction.class);
+                rejectATransaction(originalTxnId,connectedTo,connId,status);
             }
 
             @Override
@@ -56,8 +66,6 @@ public class RejectATransaction {
             otherUserType = 2;
         } else if (rejectingUserType == 2) {
             otherUserType = 1;
-        } else {
-            return ;
         }
         Transaction newTxn = new Transaction(rejectingUserType,
                 originalTxn.getAmount(),
@@ -71,7 +79,7 @@ public class RejectATransaction {
                 "yes",
                 "null");
         String newTxnId= updateTransaction(newTxn,connId);
-        String onesUid,twosUid;
+        String onesUid="",twosUid="";
         if(rejectingUserType==1){
             onesUid = rejectingUserUid;
             twosUid = otherUserUid;
@@ -79,8 +87,7 @@ public class RejectATransaction {
         else if(rejectingUserType==2){
             twosUid = rejectingUserUid;
             onesUid = otherUserUid;
-        }else
-            return ;
+        }
         updatePayForOne(newTxn,onesUid,twosUid,connId);
         updatePayForTwo(newTxn,onesUid,twosUid,connId);
         DatabaseReference originalTxnRef = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId).child(originalTxnId);
@@ -94,6 +101,7 @@ public class RejectATransaction {
         String newTxnId = txnsOfConnIdRef.push().getKey();
         newTxn.setTransactionId(newTxnId);
         txnsOfConnIdRef.child(newTxnId).setValue(newTxn);
+        Toast.makeText(RejectActiviy.this,"Hi",Toast.LENGTH_SHORT).show();
         return newTxnId;
     }
 
@@ -155,5 +163,20 @@ public class RejectATransaction {
         DatabaseReference twosUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(twosUid);
         twosUsernotificationRef.child(newNotifForTwo.getTxnId()+"").setValue(newNotifForTwo);
         twosUsernotificationRef.child(orgnlTxnId).child("status").setValue(3);
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reject_activiy);
+
+        Bundle bundle = getIntent().getExtras();
+        final String connectedTo = bundle.getString("conto"),
+                txid = bundle.getString("txid"),
+                connectionId = bundle.getString("conid");
+        final int status = bundle.getInt("status");
+
+        init(txid,connectionId,connectedTo,status);
+        finish();
     }
 }

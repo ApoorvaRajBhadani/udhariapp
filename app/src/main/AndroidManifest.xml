@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".NewTransactionActivity"></activity>
+        <activity android:name=".RejectActiviy"></activity>
+        <activity android:name=".NewTransactionActivity" />
         <activity android:name=".StartingActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
