@@ -16,7 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.arb222.udhari.AddContact.FindActiveUsersActivity;
-import com.arb222.udhari.Connection.Connection;
+import com.arb222.udhari.Connection.ConnectionModel;
 import com.arb222.udhari.Connection.ConnectionAdapter;
 import com.arb222.udhari.ContactDB.ContactContract;
 import com.arb222.udhari.ContactDB.ContactDbHelper;
@@ -39,7 +39,7 @@ public class HomeFragment extends Fragment {
     private RecyclerView connectionRecyclerView;
     private FloatingActionButton fab;
 
-    private List<Connection> connectionList = new ArrayList<>();
+    private List<ConnectionModel> connectionModelList = new ArrayList<>();
     ContactDbHelper contactDbHelper;
 
 
@@ -60,14 +60,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        final ConnectionAdapter  adapter= new ConnectionAdapter(getContext(),connectionList);
+        final ConnectionAdapter  adapter= new ConnectionAdapter(getContext(), connectionModelList);
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("userconnection").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         contactDbHelper = new ContactDbHelper(getActivity());
         final SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                connectionList.clear();
+                connectionModelList.clear();
                 for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                     UserConnection newConnection = childSnapshot.getValue(UserConnection.class);
                     String [] projection = {ContactContract.ContactEntry.COLUMN_DISPLAY_NAME, ContactContract.ContactEntry.COLUMN_PHONE_NUMBER};
@@ -81,7 +81,7 @@ public class HomeFragment extends Fragment {
                     }else {
                         displayName = newConnection.getConnectedToPhoneNumber();
                     }
-                    Connection newConnectionValue = new Connection(newConnection.getConnectedTo(),
+                    ConnectionModel newConnectionModelValue = new ConnectionModel(newConnection.getConnectedTo(),
                             newConnection.getConnectedToPhoneNumber(),
                             displayName,
                             newConnection.getConnectionId(),
@@ -89,10 +89,10 @@ public class HomeFragment extends Fragment {
                             newConnection.getPay(),
                             R.mipmap.ic_launcher,
                             newConnection.getLastContacted());
-                    connectionList.add(newConnectionValue);
+                    connectionModelList.add(newConnectionModelValue);
 
                 }
-                Collections.sort(connectionList,Connection.BY_LAST_CONTACTED);
+                Collections.sort(connectionModelList, ConnectionModel.BY_LAST_CONTACTED);
                 adapter.notifyDataSetChanged();
             }
 

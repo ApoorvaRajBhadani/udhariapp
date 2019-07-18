@@ -2,13 +2,13 @@ package com.arb222.udhari.Connection;
 
 import java.util.Comparator;
 
-public class Connection {
+public class ConnectionModel {
     String connectedTo,phoneNumber,displayName,connectionId;
     int myType,profilepicresid;
     double toPay;
     long lastContacted;
 
-    public Connection(){
+    public ConnectionModel(){
 
     }
 
@@ -16,7 +16,7 @@ public class Connection {
         return profilepicresid;
     }
 
-    public Connection(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, int profilepicresid,long lastContacted) {
+    public ConnectionModel(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, int profilepicresid, long lastContacted) {
         this.connectedTo = connectedTo;
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
@@ -31,9 +31,9 @@ public class Connection {
         return lastContacted;
     }
 
-    public static final Comparator<Connection> BY_LAST_CONTACTED = new Comparator<Connection>() {
+    public static final Comparator<ConnectionModel> BY_LAST_CONTACTED = new Comparator<ConnectionModel>() {
         @Override
-        public int compare(Connection o1, Connection o2) {
+        public int compare(ConnectionModel o1, ConnectionModel o2) {
             if(o1.getLastContacted() < o2.getLastContacted()){
                 return 1;
             }else if (o1.getLastContacted() > o2.getLastContacted()){

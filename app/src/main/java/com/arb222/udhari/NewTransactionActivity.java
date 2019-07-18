@@ -12,7 +12,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.arb222.udhari.Connection.Connection;
 import com.arb222.udhari.POJO.Notification;
 import com.arb222.udhari.POJO.Transaction;
 import com.arb222.udhari.POJO.UserConnection;

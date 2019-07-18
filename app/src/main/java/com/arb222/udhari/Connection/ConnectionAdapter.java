@@ -20,9 +20,9 @@ import java.util.List;
 public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.ConnectionViewHolder> {
 
     private Context mCtx;
-    private List<Connection> connectionsList;
+    private List<ConnectionModel> connectionsList;
 
-    public ConnectionAdapter(Context mCtx, List<Connection> connectionsList) {
+    public ConnectionAdapter(Context mCtx, List<ConnectionModel> connectionsList) {
         this.mCtx = mCtx;
         this.connectionsList = connectionsList;
     }
@@ -30,8 +30,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
     @NonNull
     @Override
     public ConnectionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view;
-        view = LayoutInflater.from(mCtx).inflate(R.layout.connections_card,parent,false);
+        View view = LayoutInflater.from(mCtx).inflate(R.layout.connections_card, parent, false);
         ConnectionViewHolder vh = new ConnectionViewHolder(view);
         return vh;
     }

@@ -6,6 +6,10 @@ public class Notification {
     long timestamp;
     int status;
 
+    public int getStatus() {
+        return status;
+    }
+
     public String getNotice() {
         return notice;
     }

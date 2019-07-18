@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_margin="10dp"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/notification_notice_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="You were paid by" />
+
+        <TextView
+            android:id="@+id/notification_displayname_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Rajesh" />
+
+        <TextView
+            android:id="@+id/notification_displayableamt_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="₹ 100" />
+
+        <TextView
+            android:id="@+id/notification_desc_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="Pizza at Mall" />
+
+        <Button
+            android:id="@+id/notification_reject_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Reject" />
+
+        <TextView
+            android:id="@+id/notification_time_textview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="May 12,2019" />
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>

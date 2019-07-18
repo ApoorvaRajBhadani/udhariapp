@@ -63,10 +63,10 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         Cursor userInContactDb = contactDb.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,null);
-        if(userInContactDb.getCount()==0){
+        //if(userInContactDb.getCount()==0){
             UpdateContactDb updateContactDb = new UpdateContactDb();
             updateContactDb.initializeContactDb(this);
-        }
+        //}
         userInContactDb.close(); }
 
     private void updateUI(FirebaseUser currentUser) {
