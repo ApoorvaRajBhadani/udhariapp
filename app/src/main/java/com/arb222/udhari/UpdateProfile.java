@@ -126,7 +126,7 @@ public class UpdateProfile extends AppCompatActivity {
 
     private void uploadData() {
         if (mNewProfileImageUri != null) {
-            final StorageReference ref = profilePictureFolderStorageReference.child(System.currentTimeMillis() + "." + getFileExtension(mNewProfileImageUri));
+            final StorageReference ref = profilePictureFolderStorageReference.child(FirebaseAuth.getInstance().getCurrentUser().getUid() + "." + getFileExtension(mNewProfileImageUri));
 
             mUploadTask = ref.putFile(mNewProfileImageUri)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

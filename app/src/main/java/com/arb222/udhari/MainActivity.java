@@ -67,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             UpdateContactDb updateContactDb = new UpdateContactDb();
             updateContactDb.initializeContactDb(this);
         //}
+        //todo:Do contact refresh in background
         userInContactDb.close(); }
 
     private void updateUI(FirebaseUser currentUser) {
