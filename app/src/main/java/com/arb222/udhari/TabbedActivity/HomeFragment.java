@@ -35,6 +35,9 @@ import java.util.Collections;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
+
+
+    //https://www.youtube.com/watch?v=cVeONIlvCqg
     View view;
     private RecyclerView connectionRecyclerView;
     private FloatingActionButton fab;

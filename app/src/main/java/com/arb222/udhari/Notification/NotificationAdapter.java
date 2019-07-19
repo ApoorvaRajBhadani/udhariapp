@@ -48,12 +48,17 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
             public void onClick(View v) {
                 if (!(notificationModelList.get(position).getStatus() == 3 || notificationModelList.get(position).getStatus() == 4 || notificationModelList.get(position).getStatus() == 5)) {
                     Toast.makeText(mCtx, "zreject Clicked", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(mCtx, RejectActiviy.class);
-                    i.putExtra("txid", notificationModelList.get(position).getTxnId());
-                    i.putExtra("conto", notificationModelList.get(position).getConnectedTo());
-                    i.putExtra("conid", notificationModelList.get(position).getConnId());
-                    i.putExtra("status", notificationModelList.get(position).getStatus());
-                    mCtx.startActivity(i);
+//                    Intent i = new Intent(mCtx, RejectActiviy.class);
+//                    i.putExtra("txid", notificationModelList.get(position).getTxnId());
+//                    i.putExtra("conto", notificationModelList.get(position).getConnectedTo());
+//                    i.putExtra("conid", notificationModelList.get(position).getConnId());
+//                    i.putExtra("status", notificationModelList.get(position).getStatus());
+//                    mCtx.startActivity(i);
+
+                    RejectATransaction object = new RejectATransaction();
+                    object.init(notificationModelList.get(position).getTxnId(),notificationModelList.get(position).getConnId(),
+                            notificationModelList.get(position).getConnectedTo(),notificationModelList.get(position).getStatus());
+                    Toast.makeText(mCtx,"Rejection Successful",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Toast.makeText(mCtx,"Can't reject this",Toast.LENGTH_SHORT).show();
