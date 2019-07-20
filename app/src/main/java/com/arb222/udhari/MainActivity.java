@@ -14,25 +14,41 @@ import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    //https://www.youtube.com/watch?v=sJ-Z9G0SDhc
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ContactDbHelper contactDbHelper;
 
 
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_activity,menu);
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings_mainactivity:
+                return true;
+            case R.id.action_about_mainactivity:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
     }
 
     @Override
@@ -62,13 +78,14 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(viewPager);
 
         SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
-        Cursor userInContactDb = contactDb.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,null);
+        Cursor userInContactDb = contactDb.query(ContactContract.ContactEntry.TABLE_NAME, null, null, null, null, null, null);
         //if(userInContactDb.getCount()==0){
-            UpdateContactDb updateContactDb = new UpdateContactDb();
-            updateContactDb.initializeContactDb(this);
+        UpdateContactDb updateContactDb = new UpdateContactDb();
+        updateContactDb.initializeContactDb(this);
         //}
         //todo:Do contact refresh in background
-        userInContactDb.close(); }
+        userInContactDb.close();
+    }
 
     private void updateUI(FirebaseUser currentUser) {
 

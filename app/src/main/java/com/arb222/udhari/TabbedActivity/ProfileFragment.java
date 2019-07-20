@@ -83,5 +83,4 @@ public class ProfileFragment extends Fragment {
                     .into(profilePicImageView);
         }
     }
-
 }

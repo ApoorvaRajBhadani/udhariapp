@@ -3,8 +3,8 @@ package com.arb222.udhari.Connection;
 import java.util.Comparator;
 
 public class ConnectionModel {
-    String connectedTo,phoneNumber,displayName,connectionId;
-    int myType,profilepicresid;
+    String connectedTo,phoneNumber,displayName,connectionId,profilepicresid;
+    int myType;
     double toPay;
     long lastContacted;
 
@@ -12,11 +12,11 @@ public class ConnectionModel {
 
     }
 
-    public int getProfilepicresid() {
+    public String getProfilepicresid() {
         return profilepicresid;
     }
 
-    public ConnectionModel(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, int profilepicresid, long lastContacted) {
+    public ConnectionModel(String connectedTo, String phoneNumber, String displayName, String connectionId, int myType, double toPay, String profilepicresid, long lastContacted) {
         this.connectedTo = connectedTo;
         this.phoneNumber = phoneNumber;
         this.displayName = displayName;
