@@ -12,7 +12,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.arb222.udhari.ConnectionActivity;
 import com.arb222.udhari.NewTransactionActivity;
+import com.arb222.udhari.POJO.Transaction;
 import com.arb222.udhari.POJO.UserInfo;
 import com.arb222.udhari.R;
 import com.google.firebase.database.DataSnapshot;
@@ -62,6 +64,19 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
+            }
+        });
+        holder.profilepicImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent connectionActivityIntent = new Intent(mCtx,ConnectionActivity.class);
+                connectionActivityIntent.putExtra("display_name",connectionsList.get(position).getDisplayName());
+                connectionActivityIntent.putExtra("connection_uid",connectionsList.get(position).getConnectedTo());
+                connectionActivityIntent.putExtra("conn_id",connectionsList.get(position).getConnectionId());
+                connectionActivityIntent.putExtra("my_type",connectionsList.get(position).getMyType());
+                connectionActivityIntent.putExtra("me_to_pay",connectionsList.get(position).getToPay());
+
+                mCtx.startActivity(connectionActivityIntent);
             }
         });
         holder.newTransactionButtonImageView.setOnClickListener(new View.OnClickListener() {
