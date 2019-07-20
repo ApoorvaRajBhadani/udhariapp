@@ -71,6 +71,7 @@ public class NotificationsFragment extends Fragment {
                     if (contactData.getCount() >= 1) {
                         contactData.moveToPosition(0);
                         displayName = contactData.getString(contactData.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME));
+                        addToList(newNotification,displayName);
                     } else {
                         final DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(newNotification.getConnection());
                         connectedToUserInfoRef.child("phoneNumber").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -85,17 +86,9 @@ public class NotificationsFragment extends Fragment {
                             }
                         });
                         displayName = dn;
+                        addToList(newNotification,displayName);
                     }
-                    NotificationModel newNotifModelValue = new NotificationModel(newNotification.getNotice()
-                            , newNotification.getTxnId()
-                            , newNotification.getConnection()
-                            , newNotification.getConnectionId()
-                            , newNotification.getDesc()
-                            , displayName
-                            , newNotification.getDisplayableAmt()
-                            , newNotification.getTimestamp()
-                            , newNotification.getStatus());
-                    notificationList.add(newNotifModelValue);
+
                 }
                 Collections.sort(notificationList,NotificationModel.BY_TIMESTAMP);
                 adapter.notifyDataSetChanged();
@@ -110,5 +103,18 @@ public class NotificationsFragment extends Fragment {
         notificationRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         notificationRecyclerView.setAdapter(adapter);
         return view;
+    }
+
+    public void addToList(Notification newNotification,String displayName){
+        NotificationModel newNotifModelValue = new NotificationModel(newNotification.getNotice()
+                , newNotification.getTxnId()
+                , newNotification.getConnection()
+                , newNotification.getConnectionId()
+                , newNotification.getDesc()
+                , displayName
+                , newNotification.getDisplayableAmt()
+                , newNotification.getTimestamp()
+                , newNotification.getStatus());
+        notificationList.add(newNotifModelValue);
     }
 }
