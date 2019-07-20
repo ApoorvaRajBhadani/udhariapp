@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ConnectionActivity"></activity>
+        <activity android:name=".Transactions.ConnectionActivity"></activity>
         <activity android:name=".AboutActivity" />
         <activity android:name=".RejectActiviy" />
         <activity android:name=".NewTransactionActivity" />

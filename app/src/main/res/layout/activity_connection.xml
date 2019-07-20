@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ConnectionActivity">
+    tools:context=".Transactions.ConnectionActivity">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/connection_activity_appbar"
@@ -34,28 +34,28 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="45dp">
+                android:layout_marginBottom="45dp"
+                >
 
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/connection_activity_image"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
-                    android:layout_marginBottom="150dp"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="4dp"
+                    android:layout_marginBottom="150dp"
                     android:src="@drawable/user"
                     app:civ_border_color="@color/colorAccent"
-                    app:civ_border_width="2dp"
-                    />
+                    app:civ_border_width="2dp" />
 
                 <TextView
                     android:id="@+id/connection_activity_topay_textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
                     android:layout_toEndOf="@id/connection_activity_image"
                     android:paddingStart="4dp"
                     android:paddingEnd="4dp"
-                    android:layout_centerVertical="true"
                     android:text="You have to pay Connection Name ₹100"
                     android:textSize="30sp" />
             </RelativeLayout>
@@ -65,17 +65,9 @@
 
     </com.google.android.material.appbar.AppBarLayout>
 
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Transactions : " />
+    <include layout="@layout/content_connection" />
 
-    </androidx.core.widget.NestedScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
