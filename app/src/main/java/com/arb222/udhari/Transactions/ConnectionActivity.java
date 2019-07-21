@@ -10,9 +10,11 @@ import android.widget.TextView;
 
 import com.arb222.udhari.Notification.NotificationAdapter;
 import com.arb222.udhari.Notification.NotificationModel;
+import com.arb222.udhari.POJO.Transaction;
 import com.arb222.udhari.POJO.UserInfo;
 import com.arb222.udhari.R;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -21,6 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -39,21 +42,28 @@ public class ConnectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_connection);
         getSupportActionBar().hide();
 
+        //Getting Intent extras
         Bundle bundle = getIntent().getExtras();
         final String displayName = bundle.getString("display_name"),
         connectionUid = bundle.getString("connection_uid"),
         connId = bundle.getString("conn_id");
-        int myType = bundle.getInt("my_type");
+        final int myType = bundle.getInt("my_type");
         double meToPay = bundle.getDouble("me_to_pay");
 
-
+        //Setting collapsing toolbar
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.connection_activity_collapsingtoolbar);
         collapsingToolbarLayout.setTitleEnabled(true);
+
+        //Initializing UI elements
         toPayTextView = findViewById(R.id.connection_activity_topay_textView);
         connectionDPImageView = findViewById(R.id.connection_activity_image);
         txnRecyclerView = (RecyclerView) findViewById(R.id.transaction_recyclerview);
 
+        //Initializing Adapter for RV
         final TransactionAdapter adapter = new TransactionAdapter(this, txnList);
+
+
+        //Setting up UI elements data
         if(meToPay>0){
             toPayTextView.setText("You have to pay "+displayName+" ₹"+meToPay);
         }else if(meToPay<0){
@@ -81,10 +91,40 @@ public class ConnectionActivity extends AppCompatActivity {
             }
         });
 
-        TransactionModel model = new TransactionModel("Sahil paid you ₹786","Pizza at mall ozone galleria dhanbad jharkhand 826004 india asia world solar system milky way","na","na","na",55555555);
-        txnList.add(model);txnList.add(model);
-        TransactionModel model2 = new TransactionModel("You have to pay Sagar Sinha Ji Jhunjhunwala patel Nagar ISM ₹900","Pizza at mall ozone","na","na","na",55555555);
-        txnList.add(model2);txnList.add(model);txnList.add(model2);txnList.add(model2);txnList.add(model2);txnList.add(model);txnList.add(model2);txnList.add(model2);txnList.add(model2);txnList.add(model);txnList.add(model2);txnList.add(model2);
+        //Getting data for the recycler view
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                txnList.clear();
+                for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                    Transaction newTransaction = childSnapshot.getValue(Transaction.class);
+                    double paidByMe=0;
+                    if(myType==1){
+                        paidByMe = newTransaction.getPaidBy1() - newTransaction.getPaidFor1();
+                    }else if(myType==2){
+                        paidByMe = newTransaction.getPaidBy2() - newTransaction.getPaidFor2();
+                    }
+                    String notice="";
+                    if(paidByMe>0){
+                        notice = "You paid for "+displayName+" ₹"+paidByMe;
+                    }else if(paidByMe<0){
+                        notice = displayName+" paid for you ₹"+Math.abs(paidByMe);
+                    }else {
+                        notice = "No amount was exchanged";
+                    }
+                    TransactionModel model = new TransactionModel(notice,newTransaction.getDesc(),newTransaction.getTransactionId(),connId,connectionUid,newTransaction.getTimestamp(),newTransaction.getDeleteOther());
+                    txnList.add(model);
+                }
+                Collections.sort(txnList,TransactionModel.BY_TIMESTAMP);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
         txnRecyclerView.setLayoutManager(new LinearLayoutManager(ConnectionActivity.this));
         txnRecyclerView.setAdapter(adapter);
     }

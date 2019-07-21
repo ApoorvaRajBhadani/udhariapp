@@ -6,12 +6,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb222.udhari.Notification.NotificationModel;
 import com.arb222.udhari.R;
+import com.arb222.udhari.RejectATransaction;
 
 import java.util.List;
 
@@ -34,11 +36,26 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     }
 
     @Override
-    public void onBindViewHolder(@NonNull TransactionViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull TransactionViewHolder holder, final int position) {
         holder.descTextView.setSelected(true);
         holder.descTextView.setText(transactionModelList.get(position).getDesc());
         holder.noticeTextView.setSelected(true);
         holder.noticeTextView.setText(transactionModelList.get(position).getNotice());
+        holder.timeTextView.setText(""+transactionModelList.get(position).getTimestamp());
+        holder.rejectButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!(transactionModelList.get(position).getDeleteOther().equals("myself")||transactionModelList.get(position).getDeleteOther().equals("yes"))){
+                    RejectATransaction object = new RejectATransaction();
+                    object.init(transactionModelList.get(position).getTxnId(),transactionModelList.get(position).getConnId(),
+                            transactionModelList.get(position).getConnectedTo(),0);
+                    Toast.makeText(mCtx,"Rejection Successful",Toast.LENGTH_SHORT).show();
+                    ((ConnectionActivity)mCtx).finish();
+                }else{
+                    Toast.makeText(mCtx,"Can't be rejected",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

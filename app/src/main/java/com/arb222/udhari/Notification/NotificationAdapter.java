@@ -54,7 +54,6 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
 //                    i.putExtra("conid", notificationModelList.get(position).getConnId());
 //                    i.putExtra("status", notificationModelList.get(position).getStatus());
 //                    mCtx.startActivity(i);
-
                     RejectATransaction object = new RejectATransaction();
                     object.init(notificationModelList.get(position).getTxnId(),notificationModelList.get(position).getConnId(),
                             notificationModelList.get(position).getConnectedTo(),notificationModelList.get(position).getStatus());
