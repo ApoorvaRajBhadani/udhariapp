@@ -8,6 +8,7 @@
     <uses-permission android:name="android.permission.WRITE_CONTACTS" />
 
     <application
+        android:name=".NotificationBase"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -15,9 +16,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".Transactions.ConnectionActivity"></activity>
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <activity android:name=".Transactions.ConnectionActivity" />
         <activity android:name=".AboutActivity" />
-        <activity android:name=".RejectActiviy" />
         <activity android:name=".NewTransactionActivity" />
         <activity android:name=".StartingActivity">
             <intent-filter>
@@ -31,6 +40,7 @@
         <activity android:name=".Authentication.OTPVerificationActivity" />
         <activity android:name=".Authentication.PhoneNoEntryActivity" />
         <activity android:name=".MainActivity" />
+
     </application>
 
 </manifest>

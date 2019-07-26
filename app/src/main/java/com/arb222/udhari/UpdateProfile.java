@@ -38,8 +38,7 @@ public class UpdateProfile extends AppCompatActivity {
     private static final int PICK_IMAGE_REQUEST = 1;
 
     private Button mChooseImageButton;
-    private Button mUpdateDataButton;
-    private TextView mShowUploadsTextView;
+    private Button mUpdateDataButton,mCancelButton;
     private EditText mFirstNameEditText;
     private EditText mLastNameEditText;
     private ImageView mProfilePicturePreviewImageView;
@@ -62,8 +61,8 @@ public class UpdateProfile extends AppCompatActivity {
         final String currentUserUid = currentUser.getUid();
 
         mChooseImageButton = findViewById(R.id.select_new_profilepic_button);
+        mCancelButton = findViewById(R.id.cancel_profiledata_button);
         mUpdateDataButton = findViewById(R.id.update_profiledata_button);
-        mShowUploadsTextView = findViewById(R.id.show_upload_status_textview);
         mFirstNameEditText = findViewById(R.id.new_firstname_edittext);
         mLastNameEditText = findViewById(R.id.new_lastname_edittext);
         mProfilePicturePreviewImageView = findViewById(R.id.new_profile_pic_preview_imageview);
@@ -85,17 +84,24 @@ public class UpdateProfile extends AppCompatActivity {
                     Toast.makeText(UpdateProfile.this, "Upload in Progress", Toast.LENGTH_SHORT).show();
                     //todo: Ghapla--- Can't upload more than once with the same activity
                 } else {
+                    String firstNameEntered = mFirstNameEditText.getText().toString();
+                    if(firstNameEntered.isEmpty()){
+                        mFirstNameEditText.setError("Enter name");
+                        mFirstNameEditText.requestFocus();
+                        return;
+                    }
                     uploadData();
                 }
             }
         });
 
-        mShowUploadsTextView.setOnClickListener(new View.OnClickListener() {
+        mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                finish();
             }
         });
+
 
     }
 
@@ -136,11 +142,12 @@ public class UpdateProfile extends AppCompatActivity {
                             handler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
+
                                     mUpdateProfileDataProgressBar.setProgress(0);
                                 }
                             }, 500);
 
-                            Toast.makeText(UpdateProfile.this, "Pic uploaded", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateProfile.this, "Updated", Toast.LENGTH_SHORT).show();
                             Log.d("UpdateProfile", "Picture uploaded to Firebase Storage");
 
                             String profilePictureUrlAtCloud;
@@ -149,8 +156,8 @@ public class UpdateProfile extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     String profilePictureUrlAtCloud = uri.toString();
 
-                                    String firstName = mFirstNameEditText.getText().toString();
-                                    String lastName = mLastNameEditText.getText().toString();
+                                    String firstName = mFirstNameEditText.getText().toString().trim();
+                                    String lastName = mLastNameEditText.getText().toString().trim();
 
                                     userDataFolderReference.child("firstName").setValue(firstName);
                                     userDataFolderReference.child("lastName").setValue(lastName);

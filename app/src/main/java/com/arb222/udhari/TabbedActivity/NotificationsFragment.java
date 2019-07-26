@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +42,7 @@ public class NotificationsFragment extends Fragment {
 
     private List<NotificationModel> notificationList = new ArrayList<>();
     ContactDbHelper contactDbHelper;
-    String dn;
+    String dn = "Name unsaved";
 
     public NotificationsFragment() {
     }
@@ -52,8 +53,8 @@ public class NotificationsFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_notifications, container, false);
 
         notificationRecyclerView = (RecyclerView) view.findViewById(R.id.notification_recyclerview);
-
         final NotificationAdapter adapter = new NotificationAdapter(getContext(), notificationList);
+        notificationRecyclerView.addItemDecoration(new DividerItemDecoration(notificationRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usernotification").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
         contactDbHelper = new ContactDbHelper(getActivity());
         final SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
@@ -62,7 +63,7 @@ public class NotificationsFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 notificationList.clear();
                 for (DataSnapshot childSnapshot : dataSnapshot.getChildren()) {
-                    Notification newNotification = childSnapshot.getValue(Notification.class);
+                    final Notification newNotification = childSnapshot.getValue(Notification.class);
                     String[] projection = {ContactContract.ContactEntry.COLUMN_DISPLAY_NAME, ContactContract.ContactEntry.COLUMN_PHONE_NUMBER};
                     String selection = ContactContract.ContactEntry.COLUMN_UID + "=?";
                     String[] selectionArgs = {newNotification.getConnection()};
@@ -79,6 +80,7 @@ public class NotificationsFragment extends Fragment {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                 dn = dataSnapshot.getValue().toString();
+
                             }
 
                             @Override
@@ -86,6 +88,7 @@ public class NotificationsFragment extends Fragment {
 
                             }
                         });
+                        //todo: not working
                         displayName = dn;
                         addToList(newNotification, displayName);
                     }

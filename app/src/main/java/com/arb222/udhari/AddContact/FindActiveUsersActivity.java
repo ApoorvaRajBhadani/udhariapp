@@ -1,6 +1,7 @@
 package com.arb222.udhari.AddContact;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -39,13 +40,15 @@ public class FindActiveUsersActivity extends AppCompatActivity {
         mUserRVList.setNestedScrollingEnabled(false);
         mUserListLayoutManager = new LinearLayoutManager(getApplicationContext(), RecyclerView.VERTICAL, false);
         mUserRVList.setLayoutManager(mUserListLayoutManager);
+        mUserRVList.addItemDecoration(new DividerItemDecoration(getApplicationContext(),DividerItemDecoration.VERTICAL));
+
 
         mUserListAdapter = new UserInContactAdapter(userList);
         mUserRVList.setAdapter(mUserListAdapter);
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String sortOrder = ContactContract.ContactEntry.COLUMN_DISPLAY_NAME + " ASC";
-        Cursor c = db.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,null);
+        Cursor c = db.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,sortOrder);
         try {
             int uidColumnIndex = c.getColumnIndex(ContactContract.ContactEntry.COLUMN_UID);
             int displaynameColIndex = c.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME);
@@ -65,6 +68,4 @@ public class FindActiveUsersActivity extends AppCompatActivity {
             c.close();
         }
     }
-
-
 }

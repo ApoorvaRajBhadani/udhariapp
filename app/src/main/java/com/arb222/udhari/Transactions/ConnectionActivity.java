@@ -2,6 +2,7 @@ package com.arb222.udhari.Transactions;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,6 +51,8 @@ public class ConnectionActivity extends AppCompatActivity {
         final int myType = bundle.getInt("my_type");
         double meToPay = bundle.getDouble("me_to_pay");
 
+
+
         //Setting collapsing toolbar
         CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.connection_activity_collapsingtoolbar);
         collapsingToolbarLayout.setTitleEnabled(true);
@@ -58,6 +61,7 @@ public class ConnectionActivity extends AppCompatActivity {
         toPayTextView = findViewById(R.id.connection_activity_topay_textView);
         connectionDPImageView = findViewById(R.id.connection_activity_image);
         txnRecyclerView = (RecyclerView) findViewById(R.id.transaction_recyclerview);
+        txnRecyclerView.addItemDecoration(new DividerItemDecoration(txnRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
 
         //Initializing Adapter for RV
         final TransactionAdapter adapter = new TransactionAdapter(this, txnList);
@@ -107,9 +111,17 @@ public class ConnectionActivity extends AppCompatActivity {
                     }
                     String notice="";
                     if(paidByMe>0){
-                        notice = "You paid for "+displayName+" ₹"+paidByMe;
+                        int firstSpace = displayName.indexOf(' ');
+                        if(firstSpace>0)
+                            notice = "You paid for "+displayName.substring(0,firstSpace)+" ₹"+paidByMe;
+                        else
+                            notice = "You paid for "+displayName+" ₹"+paidByMe;
                     }else if(paidByMe<0){
-                        notice = displayName+" paid for you ₹"+Math.abs(paidByMe);
+                        int firstSpace = displayName.indexOf(' ');
+                        if(firstSpace>0)
+                            notice = displayName.substring(0,firstSpace)+" paid for you ₹"+Math.abs(paidByMe);
+                        else
+                            notice = displayName+" paid for you ₹"+Math.abs(paidByMe);
                     }else {
                         notice = "No amount was exchanged";
                     }

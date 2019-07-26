@@ -53,9 +53,19 @@ public class NewTransactionActivity extends AppCompatActivity {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 long timestamp = System.currentTimeMillis();
-                double paidby1 = 0, paidby2 = 0, paidfor1=0, paidfor2=0, amount = Double.parseDouble(amtEditText.getText().toString());
+                double paidby1 = 0, paidby2 = 0, paidfor1 = 0, paidfor2 = 0, amount = 0;
+                try{
+                    amount = Double.parseDouble(amtEditText.getText().toString().trim());
+                }catch (NumberFormatException e){
+                    amtEditText.setError("Wrong format");
+                    amtEditText.requestFocus();
+                    return;
+                }
                 String txnDescription = descEditText.getText().toString();
+                if(txnDescription.length()==0)
+                    txnDescription = "No description provided";
                 int radioId = paidbyRadioGroup.getCheckedRadioButtonId();
                 switch (radioId) {
                     case (R.id.transaction_paidbyme_radiobutton):

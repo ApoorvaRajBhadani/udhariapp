@@ -41,7 +41,6 @@ public class StartingActivity extends AppCompatActivity {
         else {
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.READ_CONTACTS}, MY_PERMISSIONS_REQUEST_READ_CONTACTS);}
-
     }
 
     @Override

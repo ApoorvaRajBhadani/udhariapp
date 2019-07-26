@@ -1,6 +1,7 @@
 package com.arb222.udhari.Transactions;
 
 import android.content.Context;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,9 @@ import com.arb222.udhari.Notification.NotificationModel;
 import com.arb222.udhari.R;
 import com.arb222.udhari.RejectATransaction;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.TransactionViewHolder> {
 
@@ -38,10 +41,13 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
     @Override
     public void onBindViewHolder(@NonNull TransactionViewHolder holder, final int position) {
         holder.descTextView.setSelected(true);
-        holder.descTextView.setText(transactionModelList.get(position).getDesc());
+        holder.descTextView.setText("For: "+transactionModelList.get(position).getDesc());
         holder.noticeTextView.setSelected(true);
         holder.noticeTextView.setText(transactionModelList.get(position).getNotice());
-        holder.timeTextView.setText(""+transactionModelList.get(position).getTimestamp());
+        Calendar cal = Calendar.getInstance(Locale.ENGLISH);
+        cal.setTimeInMillis(transactionModelList.get(position).getTimestamp());
+        String date = DateFormat.format("MMM dd", cal).toString();
+        holder.timeTextView.setText(date);
         holder.rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

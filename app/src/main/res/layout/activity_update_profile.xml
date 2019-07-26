@@ -1,46 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".UpdateProfile">
 
     <EditText
+        android:id="@+id/new_firstname_edittext"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
-        android:id="@+id/new_firstname_edittext"
-        android:hint="First Name"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:hint="First Name"
+        android:maxLines="1"
+        app:layout_constraintBottom_toTopOf="@+id/guideline31"
+        app:layout_constraintEnd_toStartOf="@+id/guideline29"
+        app:layout_constraintStart_toStartOf="@+id/guideline28" />
+
     <EditText
-        android:layout_width="280dp"
-        android:hint="Last Name"
         android:id="@+id/new_lastname_edittext"
-        android:layout_height="wrap_content" />
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:hint="Last Name"
+        android:maxLines="1"
+        app:layout_constraintEnd_toStartOf="@+id/guideline29"
+        app:layout_constraintStart_toStartOf="@+id/guideline28"
+        app:layout_constraintTop_toTopOf="@+id/guideline31" />
+
     <Button
         android:id="@+id/select_new_profilepic_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Select Image"/>
-    <ImageView
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Select Image"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        app:layout_constraintBottom_toBottomOf="@+id/new_profile_pic_preview_imageview"
+        app:layout_constraintEnd_toStartOf="@+id/guideline29"
+        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintStart_toEndOf="@+id/new_profile_pic_preview_imageview"
+        app:layout_constraintTop_toTopOf="@+id/new_profile_pic_preview_imageview" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:src="@drawable/user"
+        app:civ_border_width="1dp"
+        app:civ_border_color="@color/colorAccent"
+        android:id="@+id/new_profile_pic_preview_imageview"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:id="@+id/new_profile_pic_preview_imageview"/>
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline30"
+        app:layout_constraintStart_toStartOf="@+id/guideline28" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/update_profiledata_button"
-        android:text="Update" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Update"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/guideline33"
+        app:layout_constraintTop_toTopOf="@+id/guideline32" />
+
+    <Button
+        android:id="@+id/cancel_profiledata_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline32" />
+
     <ProgressBar
+        android:id="@+id/update_profiledata_progressbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/update_profiledata_progressbar"/>
-    <TextView
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:progress="0"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline32"
+        app:layout_constraintEnd_toStartOf="@+id/guideline33"
+        app:layout_constraintStart_toStartOf="@+id/guideline33" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline28"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/show_upload_status_textview"
-        android:text="Show Upload"/>
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="64dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline29"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="346dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline30"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="201dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline31"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="309dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline32"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="465dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline33"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
 
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

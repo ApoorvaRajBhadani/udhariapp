@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arb222.udhari.Authentication.PhoneNoEntryActivity;
 import com.arb222.udhari.R;
 import com.arb222.udhari.UpdateProfile;
 import com.arb222.udhari.POJO.UserInfo;
@@ -27,13 +28,15 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFragment extends Fragment {
     View view;
     private DatabaseReference userinfoDatabaseReference;
     private UserInfo currentUserInfo;
-    private TextView textViewProfileFragment;
+    private TextView phoneTextView, nameTextView;
     private ImageView profilePicImageView;
-    private Button mOpenUpdateProfileActivityButton;
+    private CircleImageView mOpenUpdateProfileActivityImageButton,signoutImageButton;
 
     public ProfileFragment() {
     }
@@ -42,8 +45,10 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
-        textViewProfileFragment = (TextView) view.findViewById(R.id.profile_details);
-        mOpenUpdateProfileActivityButton = (Button) view.findViewById(R.id.update_profile_openactivity_button);
+        phoneTextView = (TextView) view.findViewById(R.id.profile_frag_phone_textview);
+        nameTextView = (TextView) view.findViewById(R.id.profile_frag_name_textview);
+        mOpenUpdateProfileActivityImageButton = (CircleImageView) view.findViewById(R.id.update_profile_openactivity_button);
+        signoutImageButton = (CircleImageView) view.findViewById(R.id.signout_imageviewbutton);
         profilePicImageView = (ImageView) view.findViewById(R.id.profile_pic_imageview);
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
         currentUserInfo = new UserInfo();
@@ -62,10 +67,19 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-        mOpenUpdateProfileActivityButton.setOnClickListener(new View.OnClickListener() {
+
+        mOpenUpdateProfileActivityImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getContext(), UpdateProfile.class));
+            }
+        });
+        signoutImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                getActivity().finish();
+                startActivity(new Intent(getActivity(), PhoneNoEntryActivity.class));
             }
         });
         updateUi();
@@ -74,13 +88,24 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUi() {
-        textViewProfileFragment.setText("UID :"+currentUserInfo.getUid()+"\nName :" + currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName() + "\nPhNo " + currentUserInfo.getPhoneNumber() + "\nStatus " + currentUserInfo.getProfileStatus() + "\nDp url " + currentUserInfo.getProfilePictureLink());
-        if (currentUserInfo.getProfileStatus() == 3) {
-            Picasso.get().load(currentUserInfo.getProfilePictureLink())
-                    .placeholder(R.mipmap.ic_launcher)
-                    .fit()
-                    .centerCrop()
-                    .into(profilePicImageView);
+        phoneTextView.setText(currentUserInfo.getPhoneNumber());
+        switch (currentUserInfo.getProfileStatus()) {
+            case 1:
+                nameTextView.setText("Not Available");
+                break;
+            case 2:
+                nameTextView.setText(currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName());
+                break;
+            case 3:
+                nameTextView.setText(currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName());
+                Picasso.get().load(currentUserInfo.getProfilePictureLink())
+                        .placeholder(R.mipmap.ic_launcher)
+                        .fit()
+                        .centerCrop()
+                        .into(profilePicImageView);
+                break;
+            default:
+                break;
         }
     }
 }
