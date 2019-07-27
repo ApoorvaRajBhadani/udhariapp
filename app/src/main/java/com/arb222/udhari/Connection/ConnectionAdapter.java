@@ -2,6 +2,7 @@ package com.arb222.udhari.Connection;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,8 @@ import com.squareup.picasso.Picasso;
 import java.util.List;
 
 public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.ConnectionViewHolder> {
+
+    private static final String TAG = "ConnectionAdapter";
 
     private Context mCtx;
     private List<ConnectionModel> connectionsList;
@@ -81,7 +84,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
         holder.newTransactionButtonImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mCtx,"New Transaction",Toast.LENGTH_LONG).show();
+                Log.d(TAG, "onClick: New Transaction");
                 Intent txnIntent = new Intent(mCtx, NewTransactionActivity.class);
                 txnIntent.putExtra("uid_of_connection",connectionsList.get(position).getConnectedTo());
                 txnIntent.putExtra("display_name",connectionsList.get(position).getDisplayName());
