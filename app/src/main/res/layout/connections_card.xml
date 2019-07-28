@@ -11,37 +11,61 @@
         <ImageView
             android:id="@+id/connection_profilepic_imageview"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="180dp"
             android:scaleType="centerCrop"
             android:src="@mipmap/ic_launcher" />
+
         <TextView
+            android:id="@+id/connection_displayname_textview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/connection_profilepic_imageview"
             android:text="Display Name"
-            android:id="@+id/connection_displayname_textview"
-            android:textSize="25sp"
             android:textColor="#ffffff"
-            android:layout_alignBottom="@id/connection_profilepic_imageview"/>
+            android:shadowColor="@android:color/black"
+            android:shadowDx="1"
+            android:shadowDy="1"
+            android:shadowRadius="1"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:textSize="25sp" />
 
         <LinearLayout
-            android:layout_below="@id/connection_profilepic_imageview"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_below="@id/connection_profilepic_imageview">
 
-            <TextView
+            <LinearLayout
                 android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="To Pay ₹100"
-                android:id="@+id/connection_topay_textview"
-                android:textSize="30sp"
-                android:layout_height="50dp" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/connection_paystatus_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="8sp"
+                    android:text="Myself to payback"/>
+
+                <TextView
+                    android:id="@+id/connection_topay_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="To Pay ₹100"
+
+                    android:textSize="24sp" />
+            </LinearLayout>
+
             <ImageView
                 android:id="@+id/connection_addtransaction_imagebutton"
-                android:clickable="true"
                 android:layout_width="50dp"
-                android:layout_height="50dp"
+                android:layout_height="match_parent"
                 android:layout_weight="0"
-                android:src="@drawable/ic_add_box"/>
+                android:clickable="true"
+                android:src="@drawable/ic_add_box" />
 
         </LinearLayout>
 

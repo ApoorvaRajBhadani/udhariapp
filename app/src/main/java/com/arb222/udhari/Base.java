@@ -11,6 +11,7 @@ import com.google.firebase.database.FirebaseDatabase;
 public class Base extends Application {
     public static final String CHANNEL_PAYMENT_ID = "channelPayment";
     public static final String CHANNEL_PAYMENT_DESC = "This channel receives new payment notifications";
+    public static final String CHANNEL_PAYMENT_GROUPKEY = "GroupPayment";
     public static final int CHANNEL_PAYMENT_NOTIFY_ID = 1;
 
     public static final String SHAREDPREF_FCMTOKEN = "FCMTOKEN";

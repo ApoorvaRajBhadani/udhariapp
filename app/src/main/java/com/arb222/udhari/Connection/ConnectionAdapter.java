@@ -54,7 +54,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserInfo connectedToUserInfo = dataSnapshot.getValue(UserInfo.class);
-                if(connectedToUserInfo.getProfileStatus()==3) {
+                if (connectedToUserInfo.getProfileStatus() == 3) {
                     Picasso.get().load(connectedToUserInfo.getProfilePictureLink())
                             .placeholder(R.drawable.user)
                             .fit()
@@ -71,12 +71,12 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
         holder.profilepicImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent connectionActivityIntent = new Intent(mCtx,ConnectionActivity.class);
-                connectionActivityIntent.putExtra("display_name",connectionsList.get(position).getDisplayName());
-                connectionActivityIntent.putExtra("connection_uid",connectionsList.get(position).getConnectedTo());
-                connectionActivityIntent.putExtra("conn_id",connectionsList.get(position).getConnectionId());
-                connectionActivityIntent.putExtra("my_type",connectionsList.get(position).getMyType());
-                connectionActivityIntent.putExtra("me_to_pay",connectionsList.get(position).getToPay());
+                Intent connectionActivityIntent = new Intent(mCtx, ConnectionActivity.class);
+                connectionActivityIntent.putExtra("display_name", connectionsList.get(position).getDisplayName());
+                connectionActivityIntent.putExtra("connection_uid", connectionsList.get(position).getConnectedTo());
+                connectionActivityIntent.putExtra("conn_id", connectionsList.get(position).getConnectionId());
+                connectionActivityIntent.putExtra("my_type", connectionsList.get(position).getMyType());
+                connectionActivityIntent.putExtra("me_to_pay", connectionsList.get(position).getToPay());
 
                 mCtx.startActivity(connectionActivityIntent);
             }
@@ -86,15 +86,24 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
             public void onClick(View v) {
                 Log.d(TAG, "onClick: New Transaction");
                 Intent txnIntent = new Intent(mCtx, NewTransactionActivity.class);
-                txnIntent.putExtra("uid_of_connection",connectionsList.get(position).getConnectedTo());
-                txnIntent.putExtra("display_name",connectionsList.get(position).getDisplayName());
-                txnIntent.putExtra("connection_id",connectionsList.get(position).getConnectionId());
-                txnIntent.putExtra("my_type",connectionsList.get(position).getMyType());
+                txnIntent.putExtra("uid_of_connection", connectionsList.get(position).getConnectedTo());
+                txnIntent.putExtra("display_name", connectionsList.get(position).getDisplayName());
+                txnIntent.putExtra("connection_id", connectionsList.get(position).getConnectionId());
+                txnIntent.putExtra("my_type", connectionsList.get(position).getMyType());
                 mCtx.startActivity(txnIntent);
             }
         });
-        holder.toPayTextView.setText("₹"+connectionsList.get(position).getToPay());
+        holder.toPayTextView.setText("₹" + Math.abs(connectionsList.get(position).getToPay()));
         holder.displayNameTextView.setText(connectionsList.get(position).getDisplayName());
+        if (connectionsList.get(position).getToPay() > 0) {
+            holder.paystatusTextView.setText("Me to payback");
+            holder.paystatusTextView.setTextColor(mCtx.getResources().getColor(R.color.erroeColor));
+        } else if (connectionsList.get(position).getToPay() < 0) {
+            holder.paystatusTextView.setText("Me to takeback");
+            holder.paystatusTextView.setTextColor(mCtx.getResources().getColor(R.color.green));
+        } else {
+            holder.paystatusTextView.setText("All settled up!");
+        }
     }
 
     @Override
@@ -102,16 +111,17 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
         return connectionsList.size();
     }
 
-    public class ConnectionViewHolder extends RecyclerView.ViewHolder{
+    public class ConnectionViewHolder extends RecyclerView.ViewHolder {
 
-        TextView displayNameTextView,toPayTextView;
-        ImageView newTransactionButtonImageView,profilepicImageView;
+        TextView displayNameTextView, toPayTextView, paystatusTextView;
+        ImageView newTransactionButtonImageView, profilepicImageView;
 
 
         public ConnectionViewHolder(@NonNull View itemView) {
             super(itemView);
             displayNameTextView = (TextView) itemView.findViewById(R.id.connection_displayname_textview);
             toPayTextView = (TextView) itemView.findViewById(R.id.connection_topay_textview);
+            paystatusTextView = (TextView) itemView.findViewById(R.id.connection_paystatus_textview);
             newTransactionButtonImageView = (ImageView) itemView.findViewById(R.id.connection_addtransaction_imagebutton);
             profilepicImageView = (ImageView) itemView.findViewById(R.id.connection_profilepic_imageview);
         }

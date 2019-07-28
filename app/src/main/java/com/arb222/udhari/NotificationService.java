@@ -1,9 +1,12 @@
 package com.arb222.udhari;
 
 import android.app.Notification;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -38,13 +41,20 @@ public class NotificationService extends FirebaseMessagingService {
 
     public void showNotification(String title,String message){
         notifMangComp = NotificationManagerCompat.from(this);
+        Intent notificationIntent = new Intent(this,MainActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent intent = PendingIntent.getActivity(this,0,notificationIntent,0);
+
         Notification notification = new NotificationCompat.Builder(this, Base.CHANNEL_PAYMENT_ID)
                 .setSmallIcon(R.drawable.ic_launcher_background)
                 .setContentTitle(title)
                 .setContentText(message)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setContentIntent(intent)
+                .setGroup(Base.CHANNEL_PAYMENT_GROUPKEY)
                 .build();
-        notifMangComp.notify(Base.CHANNEL_PAYMENT_NOTIFY_ID,notification);
+        notification.flags |= Notification.FLAG_AUTO_CANCEL;
+        notifMangComp.notify((int) SystemClock.uptimeMillis(),notification);
         Log.d("Notification service", "showNotification: "+title);
     }
 

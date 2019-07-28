@@ -11,4 +11,7 @@
     <color name="secondaryDarkColor">#004c8c</color>
     <color name="primaryTextColor">#000000</color>
     <color name="secondaryTextColor">#ffffff</color>
+    <color name="erroeColor">#f44336</color>
+    <color name="green">#4caf50</color>
+
 </resources>
