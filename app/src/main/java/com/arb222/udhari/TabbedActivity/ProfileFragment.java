@@ -1,12 +1,14 @@
 package com.arb222.udhari.TabbedActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +32,10 @@ import com.squareup.picasso.Picasso;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.arb222.udhari.Base.SHAREDPREF_AUTHUSERDISPLAYNAME;
+import static com.arb222.udhari.Base.SHAREDPREF_AUTHUSERPHONENUMBER;
+import static com.arb222.udhari.Base.SHAREDPREF_FCMTOKEN;
+
 public class ProfileFragment extends Fragment {
     View view;
     private DatabaseReference userinfoDatabaseReference;
@@ -37,6 +43,7 @@ public class ProfileFragment extends Fragment {
     private TextView phoneTextView, nameTextView;
     private ImageView profilePicImageView;
     private CircleImageView mOpenUpdateProfileActivityImageButton,signoutImageButton;
+    SharedPreferences pref;
 
     public ProfileFragment() {
     }
@@ -45,12 +52,14 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        pref = PreferenceManager.getDefaultSharedPreferences(getActivity());
         phoneTextView = (TextView) view.findViewById(R.id.profile_frag_phone_textview);
         nameTextView = (TextView) view.findViewById(R.id.profile_frag_name_textview);
         mOpenUpdateProfileActivityImageButton = (CircleImageView) view.findViewById(R.id.update_profile_openactivity_button);
         signoutImageButton = (CircleImageView) view.findViewById(R.id.signout_imageviewbutton);
         profilePicImageView = (ImageView) view.findViewById(R.id.profile_pic_imageview);
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
+        userinfoDatabaseReference.keepSynced(true);
         currentUserInfo = new UserInfo();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final String currentUserUid = currentUser.getUid();
@@ -59,6 +68,8 @@ public class ProfileFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 currentUserInfo = dataSnapshot.getValue(UserInfo.class);
                 Log.d("Profile Fragment", currentUserInfo.getPhoneNumber());
+                pref.edit().putString(SHAREDPREF_AUTHUSERDISPLAYNAME,currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName()).apply();
+                pref.edit().putString(SHAREDPREF_AUTHUSERPHONENUMBER,currentUserInfo.getPhoneNumber()).apply();
                 updateUi();
             }
 
@@ -82,7 +93,7 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(getActivity(), PhoneNoEntryActivity.class));
             }
         });
-        updateUi();
+        updateUiinit();
 
         return view;
     }
@@ -107,5 +118,12 @@ public class ProfileFragment extends Fragment {
             default:
                 break;
         }
+    }
+
+    private void updateUiinit(){
+        String displayName = pref.getString(SHAREDPREF_AUTHUSERDISPLAYNAME,"Loading...");
+        nameTextView.setText(displayName);
+        String phoneNumber = pref.getString(SHAREDPREF_AUTHUSERPHONENUMBER,"Loading...");
+        phoneTextView.setText(phoneNumber);
     }
 }

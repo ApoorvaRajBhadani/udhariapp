@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +39,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
     private EditText otpEnteredByUserEditText;
     private String phoneNumber;
     private DatabaseReference userinfoDatabaseReference;
+    private static final String TAG = "OTPVerificationActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +105,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                         }
                     });
 
-                    Toast.makeText(OTPVerificationActivity.this, "Logged in" + FirebaseAuth.getInstance().getCurrentUser().getUid(), Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "onComplete: Logged in" + FirebaseAuth.getInstance().getCurrentUser().getUid() );
                     Intent intent = new Intent(OTPVerificationActivity.this, MainActivity.class);
                     intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);

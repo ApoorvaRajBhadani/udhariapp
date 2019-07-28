@@ -1,6 +1,7 @@
 package com.arb222.udhari.Transactions;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.arb222.udhari.Notification.NotificationModel;
@@ -52,11 +54,27 @@ public class TransactionAdapter extends RecyclerView.Adapter<TransactionAdapter.
             @Override
             public void onClick(View v) {
                 if(!(transactionModelList.get(position).getDeleteOther().equals("myself")||transactionModelList.get(position).getDeleteOther().equals("yes"))){
-                    RejectATransaction object = new RejectATransaction();
-                    object.init(transactionModelList.get(position).getTxnId(),transactionModelList.get(position).getConnId(),
-                            transactionModelList.get(position).getConnectedTo(),0);
-                    Toast.makeText(mCtx,"Rejection Successful",Toast.LENGTH_SHORT).show();
-                    ((ConnectionActivity)mCtx).finish();
+                    AlertDialog.Builder alterDialogBuilder = new AlertDialog.Builder(mCtx);
+                    alterDialogBuilder.setMessage("Do you want to cancel this transaction?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RejectATransaction object = new RejectATransaction();
+                                    object.init(transactionModelList.get(position).getTxnId(),transactionModelList.get(position).getConnId(),
+                                            transactionModelList.get(position).getConnectedTo(),0);
+                                    Toast.makeText(mCtx,"Rejection Successful",Toast.LENGTH_SHORT).show();
+                                    ((ConnectionActivity)mCtx).finish();
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    final AlertDialog alertDialog = alterDialogBuilder.create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.show();
                 }else{
                     Toast.makeText(mCtx,"Can't be rejected",Toast.LENGTH_SHORT).show();
                 }

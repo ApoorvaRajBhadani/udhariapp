@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -72,10 +73,12 @@ public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdap
                     String [] whereArgs = {userList.get(position).getUid()};
                     db.update(ContactContract.ContactEntry.TABLE_NAME,value, ContactContract.ContactEntry.COLUMN_UID+"=?",whereArgs);
                     Log.d("Adapter","DB updated");
+                    Toast.makeText(context,"Connected",Toast.LENGTH_SHORT).show();
                     ((FindActiveUsersActivity)context).finish();
                 }
                 else {
                     Log.d("Adapter","user already present");
+                    Toast.makeText(context,"Already Connected",Toast.LENGTH_SHORT).show();
                     ((FindActiveUsersActivity)context).finish();
                 }
             }

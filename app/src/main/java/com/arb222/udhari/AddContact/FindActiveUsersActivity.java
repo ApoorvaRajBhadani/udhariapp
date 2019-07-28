@@ -14,6 +14,7 @@ import com.arb222.udhari.AddContact.UserInContactAdapter;
 import com.arb222.udhari.ContactDB.ContactContract;
 import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.arb222.udhari.R;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
@@ -48,7 +49,9 @@ public class FindActiveUsersActivity extends AppCompatActivity {
 
         SQLiteDatabase db = mDbHelper.getReadableDatabase();
         String sortOrder = ContactContract.ContactEntry.COLUMN_DISPLAY_NAME + " ASC";
-        Cursor c = db.query(ContactContract.ContactEntry.TABLE_NAME,null,null,null,null,null,sortOrder);
+        String selection = ContactContract.ContactEntry.COLUMN_UID+"!=?";
+        String [] selectionArgs = {FirebaseAuth.getInstance().getCurrentUser().getUid()};
+        Cursor c = db.query(ContactContract.ContactEntry.TABLE_NAME,null,selection,selectionArgs,null,null,sortOrder);
         try {
             int uidColumnIndex = c.getColumnIndex(ContactContract.ContactEntry.COLUMN_UID);
             int displaynameColIndex = c.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME);

@@ -8,10 +8,14 @@ import android.os.Build;
 
 import com.google.firebase.database.FirebaseDatabase;
 
-public class NotificationBase extends Application {
+public class Base extends Application {
     public static final String CHANNEL_PAYMENT_ID = "channelPayment";
     public static final String CHANNEL_PAYMENT_DESC = "This channel receives new payment notifications";
     public static final int CHANNEL_PAYMENT_NOTIFY_ID = 1;
+
+    public static final String SHAREDPREF_FCMTOKEN = "FCMTOKEN";
+    public static final String SHAREDPREF_AUTHUSERDISPLAYNAME = "AUTHUSERDISPLAYNAME";
+    public static final String SHAREDPREF_AUTHUSERPHONENUMBER = "AUTHUSERPHONENUMBER";
 
     @Override
     public void onCreate() {

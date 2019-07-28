@@ -38,36 +38,21 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import static com.arb222.udhari.Base.SHAREDPREF_FCMTOKEN;
+
 public class MainActivity extends AppCompatActivity {
 
     //https://www.youtube.com/watch?v=sJ-Z9G0SDhc
 
-
+    private static final String TAG = "MainActivity";
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private ContactDbHelper contactDbHelper;
+    private SharedPreferences pref;
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
-        return true;
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings_mainactivity:
-                return true;
-            case R.id.action_about_mainactivity:
-                startActivity(new Intent(MainActivity.this, AboutActivity.class));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-
-    }
 
 //    @Override
 //    protected void onStart() {
@@ -79,16 +64,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if(FirebaseAuth.getInstance().getCurrentUser()==null){
-            finish();
-            startActivity(new Intent(MainActivity.this, PhoneNoEntryActivity.class));
-        }
         setContentView(R.layout.activity_main);
 
-        SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(this);
-        String token = pref.getString("FCMTOKEN","NA");
-        DatabaseReference fcmtokenRef = FirebaseDatabase.getInstance().getReference("fcmtoken");
-        fcmtokenRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("token").setValue(token);
+        pref = PreferenceManager.getDefaultSharedPreferences(this);
+        startUpdateFCMTokenFirebase();
 
         tabLayout = (TabLayout) findViewById(R.id.tablayout_id);
         viewPager = (ViewPager) findViewById(R.id.viewpager_id);
@@ -112,24 +91,61 @@ public class MainActivity extends AppCompatActivity {
         updateContactDb.initializeContactDb(this);
         }else {
             //todo:Do contact refresh in background
-            updatingContactThread.run();
+            //updatingContactThread.run();
+            startUpdateContacts();
         }
         userInContactDb.close();
     }
 
-    private void updateUI(FirebaseUser currentUser) {
 
+    public void startUpdateContacts(){
+        UpdateContactRunnable updateContactRunnable = new UpdateContactRunnable();
+        new Thread(updateContactRunnable).start();
     }
 
-    public Thread updatingContactThread = new Thread(new Runnable() {
+    class UpdateContactRunnable implements Runnable{
         @Override
         public void run() {
-            Toast.makeText(MainActivity.this,"Updating contacts",Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "run: Updating contacts");
             UpdateContactDb updateContactDb = new UpdateContactDb();
             updateContactDb.initializeContactDb(MainActivity.this);
         }
-    });
+    }
 
+    private void startUpdateFCMTokenFirebase(){
+        UpdateFCMTokenFirebaseRunnable fcmRunnable = new UpdateFCMTokenFirebaseRunnable();
+        new Thread(fcmRunnable).start();
 
+    }
+
+    class UpdateFCMTokenFirebaseRunnable implements Runnable{
+        @Override
+        public void run() {
+            Log.d(TAG, "run: Updating FCM token on Firebase");
+            String token = pref.getString(SHAREDPREF_FCMTOKEN,"NA");
+            DatabaseReference fcmtokenRef = FirebaseDatabase.getInstance().getReference("fcmtoken");
+            fcmtokenRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("token").setValue(token);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main_activity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings_mainactivity:
+                return true;
+            case R.id.action_about_mainactivity:
+                startActivity(new Intent(MainActivity.this, AboutActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+    }
 
 }

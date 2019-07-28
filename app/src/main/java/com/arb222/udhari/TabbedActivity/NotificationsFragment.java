@@ -43,6 +43,7 @@ public class NotificationsFragment extends Fragment {
     private List<NotificationModel> notificationList = new ArrayList<>();
     ContactDbHelper contactDbHelper;
     String dn = "Name unsaved";
+    private DatabaseReference ref;
 
     public NotificationsFragment() {
     }
@@ -55,7 +56,8 @@ public class NotificationsFragment extends Fragment {
         notificationRecyclerView = (RecyclerView) view.findViewById(R.id.notification_recyclerview);
         final NotificationAdapter adapter = new NotificationAdapter(getContext(), notificationList);
         notificationRecyclerView.addItemDecoration(new DividerItemDecoration(notificationRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("usernotification").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref = FirebaseDatabase.getInstance().getReference("usernotification").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ref.keepSynced(true);
         contactDbHelper = new ContactDbHelper(getActivity());
         final SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         ref.addValueEventListener(new ValueEventListener() {
@@ -76,6 +78,7 @@ public class NotificationsFragment extends Fragment {
                         contactData.close();
                     } else {
                         final DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(newNotification.getConnection());
+                        connectedToUserInfoRef.keepSynced(true);
                         connectedToUserInfoRef.child("phoneNumber").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

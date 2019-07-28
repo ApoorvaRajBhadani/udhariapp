@@ -1,6 +1,8 @@
 package com.arb222.udhari.Notification;
 
+import androidx.appcompat.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,20 +45,35 @@ public class NotificationAdapter extends RecyclerView.Adapter<NotificationAdapte
         cal.setTimeInMillis(notificationModelList.get(position).getTimestamp());
         String date = DateFormat.format("MMM dd", cal).toString();
         holder.timeTextView.setText(date);
-        holder.descTextView.setText("  For : "+notificationModelList.get(position).getDesc());
+        holder.descTextView.setText("  For : " + notificationModelList.get(position).getDesc());
         holder.displayableAmtTextView.setText("₹ " + notificationModelList.get(position).getDisplayableAmt());
         holder.noticeTextView.setText(notificationModelList.get(position).getNotice() + " " + notificationModelList.get(position).getDisplayName());
         holder.rejectButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!(notificationModelList.get(position).getStatus() == 3 || notificationModelList.get(position).getStatus() == 4 || notificationModelList.get(position).getStatus() == 5)) {
-                    RejectATransaction object = new RejectATransaction();
-                    object.init(notificationModelList.get(position).getTxnId(),notificationModelList.get(position).getConnId(),
-                            notificationModelList.get(position).getConnectedTo(),notificationModelList.get(position).getStatus());
-                    Toast.makeText(mCtx,"Rejection Successful",Toast.LENGTH_SHORT).show();
-                }
-                else {
-                    Toast.makeText(mCtx,"Can't reject this",Toast.LENGTH_SHORT).show();
+                    AlertDialog.Builder alterDialogBuilder = new AlertDialog.Builder(mCtx);
+                    alterDialogBuilder.setMessage("Do you want to reject this transaction?")
+                            .setCancelable(false)
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    RejectATransaction object = new RejectATransaction();
+                                    object.init(notificationModelList.get(position).getTxnId(), notificationModelList.get(position).getConnId(),
+                                            notificationModelList.get(position).getConnectedTo(), notificationModelList.get(position).getStatus());
+                                    Toast.makeText(mCtx, "Rejection Successful", Toast.LENGTH_SHORT).show();
+                                }
+                            }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    });
+                    final AlertDialog alertDialog = alterDialogBuilder.create();
+                    alertDialog.setTitle("Alert");
+                    alertDialog.show();
+                } else {
+                    Toast.makeText(mCtx, "Can't reject this", Toast.LENGTH_SHORT).show();
                 }
             }
         });

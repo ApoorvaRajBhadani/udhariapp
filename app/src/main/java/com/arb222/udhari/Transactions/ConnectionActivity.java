@@ -6,15 +6,20 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
+import com.arb222.udhari.NewTransactionActivity;
 import com.arb222.udhari.Notification.NotificationAdapter;
 import com.arb222.udhari.Notification.NotificationModel;
 import com.arb222.udhari.POJO.Transaction;
 import com.arb222.udhari.POJO.UserInfo;
 import com.arb222.udhari.R;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,9 +36,12 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ConnectionActivity extends AppCompatActivity {
 
+    private static final String TAG = "ConnectionActivity";
+
     private CircleImageView connectionDPImageView;
     private TextView toPayTextView;
     private RecyclerView txnRecyclerView;
+    private FloatingActionButton fab;
 
     private List<TransactionModel> txnList = new ArrayList<>();
 
@@ -60,6 +68,7 @@ public class ConnectionActivity extends AppCompatActivity {
         //Initializing UI elements
         toPayTextView = findViewById(R.id.connection_activity_topay_textView);
         connectionDPImageView = findViewById(R.id.connection_activity_image);
+        fab = findViewById(R.id.fab_newtxn);
         txnRecyclerView = (RecyclerView) findViewById(R.id.transaction_recyclerview);
         txnRecyclerView.addItemDecoration(new DividerItemDecoration(txnRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
 
@@ -75,6 +84,21 @@ public class ConnectionActivity extends AppCompatActivity {
         }else {
             toPayTextView.setText("You both are settled up");
         }
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, "onClick: New Transaction");
+                Intent txnIntent = new Intent(ConnectionActivity.this, NewTransactionActivity.class);
+                txnIntent.putExtra("uid_of_connection",connectionUid);
+                txnIntent.putExtra("display_name",displayName);
+                txnIntent.putExtra("connection_id",connId);
+                txnIntent.putExtra("my_type",myType);
+                startActivity(txnIntent);
+            }
+        });
+
+        //Setting DP for connection
         DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(connectionUid);
         connectedToUserInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -97,6 +121,7 @@ public class ConnectionActivity extends AppCompatActivity {
 
         //Getting data for the recycler view
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
+        ref.keepSynced(true);
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
