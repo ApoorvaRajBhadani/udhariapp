@@ -6,6 +6,8 @@ import android.app.NotificationManager;
 import android.net.Uri;
 import android.os.Build;
 
+import com.google.firebase.database.FirebaseDatabase;
+
 public class NotificationBase extends Application {
     public static final String CHANNEL_PAYMENT_ID = "channelPayment";
     public static final String CHANNEL_PAYMENT_DESC = "This channel receives new payment notifications";
@@ -14,7 +16,7 @@ public class NotificationBase extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
         createNotificationChannels();
     }
 
