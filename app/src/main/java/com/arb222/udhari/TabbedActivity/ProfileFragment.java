@@ -59,7 +59,7 @@ public class ProfileFragment extends Fragment {
         signoutImageButton = (CircleImageView) view.findViewById(R.id.signout_imageviewbutton);
         profilePicImageView = (ImageView) view.findViewById(R.id.profile_pic_imageview);
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
-        userinfoDatabaseReference.keepSynced(true);
+        //userinfoDatabaseReference.keepSynced(true);
         currentUserInfo = new UserInfo();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final String currentUserUid = currentUser.getUid();

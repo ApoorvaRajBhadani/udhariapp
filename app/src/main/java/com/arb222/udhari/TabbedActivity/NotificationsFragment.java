@@ -57,7 +57,7 @@ public class NotificationsFragment extends Fragment {
         final NotificationAdapter adapter = new NotificationAdapter(getContext(), notificationList);
         notificationRecyclerView.addItemDecoration(new DividerItemDecoration(notificationRecyclerView.getContext(),DividerItemDecoration.VERTICAL));
         ref = FirebaseDatabase.getInstance().getReference("usernotification").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        ref.keepSynced(true);
+        //ref.keepSynced(true);
         contactDbHelper = new ContactDbHelper(getActivity());
         final SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         ref.addValueEventListener(new ValueEventListener() {
@@ -78,7 +78,7 @@ public class NotificationsFragment extends Fragment {
                         contactData.close();
                     } else {
                         final DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(newNotification.getConnection());
-                        connectedToUserInfoRef.keepSynced(true);
+                        //connectedToUserInfoRef.keepSynced(true);
                         connectedToUserInfoRef.child("phoneNumber").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
