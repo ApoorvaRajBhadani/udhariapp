@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
     <item
-        android:id="@+id/action_settings_mainactivity"
-        android:title="Settings"
+        android:id="@+id/action_report_mainactivity"
+        android:title="Report"
         app:showAsAction="never" />
 
     <item

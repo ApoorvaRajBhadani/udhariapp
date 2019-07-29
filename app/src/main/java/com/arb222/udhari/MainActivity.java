@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -137,7 +138,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings_mainactivity:
+            case R.id.action_report_mainactivity:
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto:moneyfiedapp@gmail.com"));
+                startActivity(emailIntent);
                 return true;
             case R.id.action_about_mainactivity:
                 startActivity(new Intent(MainActivity.this, AboutActivity.class));

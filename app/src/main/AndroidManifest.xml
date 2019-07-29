@@ -25,21 +25,33 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Transactions.ConnectionActivity" />
-        <activity android:name=".AboutActivity" />
-        <activity android:name=".NewTransactionActivity" />
-        <activity android:name=".StartingActivity">
+        <activity android:name=".Transactions.ConnectionActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".AboutActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".NewTransactionActivity"
+            android:label="New Transaction"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".StartingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddContact.FindActiveUsersActivity" />
-        <activity android:name=".UpdateProfile" />
-        <activity android:name=".Authentication.OTPVerificationActivity" />
-        <activity android:name=".Authentication.PhoneNoEntryActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".AddContact.FindActiveUsersActivity"
+            android:label="Add Contact"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".UpdateProfile"
+            android:label="Update Profile"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Authentication.OTPVerificationActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".Authentication.PhoneNoEntryActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

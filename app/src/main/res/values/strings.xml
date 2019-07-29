@@ -1,3 +1,28 @@
 <resources>
-    <string name="app_name">Udhari</string>
+    <string name="app_name">Moneyfied!</string>
+    <string name="details">Moneyfied - Mutual Expense Manager
+
+
+
+Helps you to keep a record of expenses made by you and your friend for each other. The app also gives a final statement about who has to pay whom and how much.
+
+
+\n\nHighlights-
+
+
+
+\n*Splitting bill equally
+
+\n*Notification on each transaction made
+
+\n*Easy log in via phone number
+
+\n*Setting name and profile picture
+
+\n*Names of the connections are shown as names you save in contact
+
+\n*Record of each transactions made
+
+\n*Offline capability
+    \n\n App name credits-\nAbhinav Prakash, KIIT</string>
 </resources>
