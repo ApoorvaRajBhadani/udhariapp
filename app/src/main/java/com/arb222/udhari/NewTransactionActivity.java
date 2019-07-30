@@ -63,7 +63,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                     amtEditText.requestFocus();
                     return;
                 }
-                String txnDescription = descEditText.getText().toString();
+                String txnDescription = descEditText.getText().toString().trim();
                 if(txnDescription.length()==0)
                     txnDescription = "No description provided";
                 int radioId = paidbyRadioGroup.getCheckedRadioButtonId();
@@ -107,10 +107,9 @@ public class NewTransactionActivity extends AppCompatActivity {
                 Transaction transaction = new Transaction(myType,amount,paidby1,paidby2,paidfor1,paidfor2,timestamp,txnDescription,"null","null","null");
                 String txnId= updateTransaction(transaction,connectionId);
                 transaction.setTransactionId(txnId);
-                updatePaymentMyself(connectionId,myType,paidby1,paidby2,paidfor1,paidfor2,connectedTo,txnId,txnDescription,timestamp);
-                updatePaymentOther(connectionId,myType,paidby1,paidby2,paidfor1,paidfor2,connectedTo,txnId,txnDescription,timestamp);
-                Toast.makeText(NewTransactionActivity.this,"Transaction successful",Toast.LENGTH_SHORT).show();
-                finish();
+                //updatePaymentMyself(connectionId,myType,paidby1,paidby2,paidfor1,paidfor2,connectedTo,txnId,txnDescription,timestamp);
+                //updatePaymentOther(connectionId,myType,paidby1,paidby2,paidfor1,paidfor2,connectedTo,txnId,txnDescription,timestamp);
+
             }
         });
 
@@ -128,6 +127,8 @@ public class NewTransactionActivity extends AppCompatActivity {
         String transactionId = conIdref.push().getKey();
         transaction.setTransactionId(transactionId);
         conIdref.child(transactionId).setValue(transaction);
+        Toast.makeText(NewTransactionActivity.this,"Transaction successful",Toast.LENGTH_SHORT).show();
+        finish();
         return transactionId;
     }
     private void updatePaymentMyself(final String connId,final int myType,final double paidby1,final double paidby2,final double paidfor1,final double paidfor2,final String connectedTo,final String txnId,final String desc,final long timestamp){
@@ -149,7 +150,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                 if(toPayAddnl>0) notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";
                 Notification myNotif = new Notification(notice,txnId,connectedTo,connId,desc,Math.abs(toPayAddnl),timestamp,1);
-                updateMyNotif(myNotif);
+                //updateMyNotif(myNotif);
             }
 
             @Override
@@ -187,7 +188,7 @@ public class NewTransactionActivity extends AppCompatActivity {
                 if(toPayAddnl>0)notice = "You were paid by";
                 if(toPayAddnl<0) notice = "You paid to";
                 Notification otherNotif = new Notification(notice,txnId,FirebaseAuth.getInstance().getCurrentUser().getUid(),connId,desc,Math.abs(toPayAddnl),timestamp,1);
-                updateOtherNotif(otherNotif,connectedTo);
+                //updateOtherNotif(otherNotif,connectedTo);
             }
 
             @Override

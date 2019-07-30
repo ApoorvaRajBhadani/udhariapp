@@ -95,15 +95,19 @@ public class RejectATransaction {
             onesUid = otherUserUid;
         }else
             return ;
-        updatePayForOne(newTxn,onesUid,twosUid,connId);
-        Log.d(LOG_TAG,"Payment updated for user one");
-        updatePayForTwo(newTxn,onesUid,twosUid,connId);
-        Log.d(LOG_TAG,"Payment updated for user two");
+//        updatePayForOne(newTxn,onesUid,twosUid,connId);
+//        Log.d(LOG_TAG,"Payment updated for user one");
+//        updatePayForTwo(newTxn,onesUid,twosUid,connId);
+//        Log.d(LOG_TAG,"Payment updated for user two");
         DatabaseReference originalTxnRef = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId).child(originalTxnId);
         originalTxnRef.child("deleteOther").setValue("myself");
         originalTxnRef.child("reference").setValue(newTxnId);
         Log.d(LOG_TAG,"Original Transaction details updated with reference and deleteOther");
-        Log.d(LOG_TAG,"Rejection Successful");
+        DatabaseReference twosUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(twosUid);
+        twosUsernotificationRef.child(originalTxnId).child("status").setValue(3);
+        DatabaseReference onesUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(onesUid);
+        onesUsernotificationRef.child(originalTxnId).child("status").setValue(3);
+        Log.d(LOG_TAG,"Notification updated and Rejection Successful");
     }
 
     private String updateTransaction(Transaction newTxn,String connId){
@@ -128,7 +132,7 @@ public class RejectATransaction {
                 if(payAddnl>0) notice = "You are charged-back by";
                 else if(payAddnl<0) notice="You are paid-back by";
                 Notification newNotifForOne = new Notification(notice,newTxn.getTransactionId(),twosUid,connId,newTxn.getDesc(),Math.abs(payAddnl),newTxn.getTimestamp(),4);
-                updateNotifForOne(newNotifForOne,onesUid,newTxn.getReference());
+                //updateNotifForOne(newNotifForOne,onesUid,newTxn.getReference());
                 Log.d(LOG_TAG,"Notification updated for user one");
             }
 
@@ -160,7 +164,7 @@ public class RejectATransaction {
                 if(payAddnl>0) notice = "You are charged-back by";
                 else if(payAddnl<0) notice="You are paid-back by";
                 Notification newNotifForTwo = new Notification(notice,newTxn.getTransactionId(),onesUid,connId,newTxn.getDesc(),Math.abs(payAddnl),newTxn.getTimestamp(),4);
-                updateNotifForTwo(newNotifForTwo,twosUid,newTxn.getReference());
+                //updateNotifForTwo(newNotifForTwo,twosUid,newTxn.getReference());
                 Log.d(LOG_TAG,"Notification updated for user two");
             }
 
