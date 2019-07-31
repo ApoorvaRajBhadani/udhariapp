@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.arb222.udhari.AddContact.UserInContact;
 import com.arb222.udhari.AddContact.UserInContactAdapter;
@@ -66,6 +67,9 @@ public class FindActiveUsersActivity extends AppCompatActivity {
                 userList.add(user);
             }
             mUserListAdapter.notifyDataSetChanged();
+            if(c.getCount() == 0){
+                Toast.makeText(this, "None of your contacts use Moneyfied!"+"\nRestart the app to refresh contact list", Toast.LENGTH_LONG).show();
+            }
         }
         finally {
             c.close();
