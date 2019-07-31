@@ -104,6 +104,7 @@ public class UpdateContactDb {
                 }
             });
         }
+        phones.close();
     }
 
     private void getUserDetails(final String displayName, final String phoneNumber) {

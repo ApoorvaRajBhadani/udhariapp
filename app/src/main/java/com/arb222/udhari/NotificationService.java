@@ -80,8 +80,8 @@ public class NotificationService extends FirebaseMessagingService {
             if (contactData.getCount() >= 1) {
                 contactData.moveToPosition(0);
                 displayname = contactData.getString(contactData.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME));
-                contactData.close();
             }
+            contactData.close();
             showNotification(notice+" "+displayname+" ₹"+amt,"For : "+desc);
         }
     }

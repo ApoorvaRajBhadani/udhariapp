@@ -86,6 +86,7 @@ public class HomeFragment extends Fragment {
                     }else {
                         displayName = newConnection.getConnectedToPhoneNumber();
                     }
+                    contactData.close();
                     String connectedToProfilePicLink = "https://firebasestorage.googleapis.com/v0/b/udhari-arb222.appspot.com/o/profilepicture%2Fuser.png?alt=media&token=a3de802b-1817-4802-9801-80fc0226b1a4";
                     ConnectionModel newConnectionModelValue = new ConnectionModel(newConnection.getConnectedTo(),
                             newConnection.getConnectedToPhoneNumber(),

@@ -75,7 +75,7 @@ public class NotificationsFragment extends Fragment {
                         contactData.moveToPosition(0);
                         displayName = contactData.getString(contactData.getColumnIndex(ContactContract.ContactEntry.COLUMN_DISPLAY_NAME));
                         addToList(newNotification, displayName);
-                        contactData.close();
+
                     } else {
                         final DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(newNotification.getConnection());
                         connectedToUserInfoRef.keepSynced(true);
@@ -95,6 +95,7 @@ public class NotificationsFragment extends Fragment {
                         displayName = dn;
                         addToList(newNotification, displayName);
                     }
+                    contactData.close();
 
                 }
 
