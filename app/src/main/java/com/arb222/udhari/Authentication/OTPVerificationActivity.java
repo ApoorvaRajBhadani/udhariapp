@@ -96,7 +96,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                             if(  !(dataSnapshot.hasChild(currentUserUid))  ){
-                                createUserinfoData();
+                                //createUserinfoData();
                             }
                         }
 

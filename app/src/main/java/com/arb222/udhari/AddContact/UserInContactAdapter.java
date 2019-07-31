@@ -55,7 +55,9 @@ public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdap
         holder.phoneTextView.setText(userList.get(position).getPhoneNumber());
         final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference currentUserconnectionref = holder.UserConnectionRef.child(myUid);
+        currentUserconnectionref.keepSynced(true);
         final DatabaseReference connectionUserconnectionref = holder.UserConnectionRef.child(userList.get(position).getUid());
+        connectionUserconnectionref.keepSynced(true);
         final String newConnectionId = myUid+"@+@"+userList.get(position).getUid();
 
         holder.card.setOnClickListener(new View.OnClickListener() {
