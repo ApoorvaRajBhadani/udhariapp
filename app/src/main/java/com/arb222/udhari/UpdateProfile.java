@@ -5,7 +5,10 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -90,7 +93,11 @@ public class UpdateProfile extends AppCompatActivity {
                         mFirstNameEditText.requestFocus();
                         return;
                     }
-                    uploadData();
+                    if(isNetworkAvailable()) {
+                        uploadData();
+                    }else{
+                        Toast.makeText(UpdateProfile.this,"No Internet",Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
@@ -185,5 +192,16 @@ public class UpdateProfile extends AppCompatActivity {
             Toast.makeText(this, "No image selected", Toast.LENGTH_SHORT).show();
         }
 
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Network is present and connected
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }

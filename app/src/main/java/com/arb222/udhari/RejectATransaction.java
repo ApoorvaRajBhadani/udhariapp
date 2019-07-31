@@ -100,18 +100,22 @@ public class RejectATransaction {
 //        updatePayForTwo(newTxn,onesUid,twosUid,connId);
 //        Log.d(LOG_TAG,"Payment updated for user two");
         DatabaseReference originalTxnRef = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId).child(originalTxnId);
+        originalTxnRef.keepSynced(true);
         originalTxnRef.child("deleteOther").setValue("myself");
         originalTxnRef.child("reference").setValue(newTxnId);
         Log.d(LOG_TAG,"Original Transaction details updated with reference and deleteOther");
         DatabaseReference twosUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(twosUid);
+        twosUsernotificationRef.keepSynced(true);
         twosUsernotificationRef.child(originalTxnId).child("status").setValue(3);
         DatabaseReference onesUsernotificationRef = FirebaseDatabase.getInstance().getReference("usernotification").child(onesUid);
+        onesUsernotificationRef.keepSynced(true);
         onesUsernotificationRef.child(originalTxnId).child("status").setValue(3);
         Log.d(LOG_TAG,"Notification updated and Rejection Successful");
     }
 
     private String updateTransaction(Transaction newTxn,String connId){
         DatabaseReference txnsOfConnIdRef = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
+        txnsOfConnIdRef.keepSynced(true);
         String newTxnId = txnsOfConnIdRef.push().getKey();
         newTxn.setTransactionId(newTxnId);
         txnsOfConnIdRef.child(newTxnId).setValue(newTxn);

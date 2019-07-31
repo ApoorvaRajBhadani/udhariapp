@@ -48,6 +48,7 @@ public class OTPVerificationActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
+        userinfoDatabaseReference.keepSynced(true);
         otpEnteredByUserEditText = (EditText) findViewById(R.id.otp_recieved_edittext_id);
         verifyOtpButton = (Button) findViewById(R.id.verify_otp_button_id);
         phoneNumber = getIntent().getStringExtra("phonenumber");

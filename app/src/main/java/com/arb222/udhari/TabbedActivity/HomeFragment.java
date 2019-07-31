@@ -66,7 +66,7 @@ public class HomeFragment extends Fragment {
 
         final ConnectionAdapter  adapter= new ConnectionAdapter(getContext(), connectionModelList);
         ref = FirebaseDatabase.getInstance().getReference("userconnection").child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-        //ref.keepSynced(true);
+        ref.keepSynced(true);
         contactDbHelper = new ContactDbHelper(getActivity());
         final SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         ref.addValueEventListener(new ValueEventListener() {

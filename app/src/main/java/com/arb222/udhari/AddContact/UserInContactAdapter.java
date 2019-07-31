@@ -3,6 +3,8 @@ package com.arb222.udhari.AddContact;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,21 +62,25 @@ public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdap
             @Override
             public void onClick(View v) {
                 if(userList.get(position).getConnectionId().equals("NA")){
-                    long timestamp = System.currentTimeMillis();
-                    UserConnection type1 = new UserConnection(userList.get(position).getUid(),newConnectionId,userList.get(position).getPhoneNumber(),1,0,timestamp);
-                    currentUserconnectionref.child(newConnectionId).setValue(type1);
-                    UserConnection type2 = new UserConnection(myUid,newConnectionId,FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().toString(),2,0,timestamp);
-                    connectionUserconnectionref.child(newConnectionId).setValue(type2);
-                    Log.d("Adapter","Created");
+                    if(isNetworkAvailable()) {
+                        long timestamp = System.currentTimeMillis();
+                        UserConnection type1 = new UserConnection(userList.get(position).getUid(), newConnectionId, userList.get(position).getPhoneNumber(), 1, 0, timestamp);
+                        currentUserconnectionref.child(newConnectionId).setValue(type1);
+                        UserConnection type2 = new UserConnection(myUid, newConnectionId, FirebaseAuth.getInstance().getCurrentUser().getPhoneNumber().toString(), 2, 0, timestamp);
+                        connectionUserconnectionref.child(newConnectionId).setValue(type2);
+                        Log.d("Adapter", "Created");
 
-                    SQLiteDatabase db= contactDbHelper.getWritableDatabase();
-                    ContentValues value = new ContentValues();
-                    value.put(ContactContract.ContactEntry.COLUMN_CONNECTION_ID,newConnectionId);
-                    String [] whereArgs = {userList.get(position).getUid()};
-                    db.update(ContactContract.ContactEntry.TABLE_NAME,value, ContactContract.ContactEntry.COLUMN_UID+"=?",whereArgs);
-                    Log.d("Adapter","DB updated");
-                    Toast.makeText(context,"Connected",Toast.LENGTH_SHORT).show();
-                    ((FindActiveUsersActivity)context).finish();
+                        SQLiteDatabase db = contactDbHelper.getWritableDatabase();
+                        ContentValues value = new ContentValues();
+                        value.put(ContactContract.ContactEntry.COLUMN_CONNECTION_ID, newConnectionId);
+                        String[] whereArgs = {userList.get(position).getUid()};
+                        db.update(ContactContract.ContactEntry.TABLE_NAME, value, ContactContract.ContactEntry.COLUMN_UID + "=?", whereArgs);
+                        Log.d("Adapter", "DB updated");
+                        Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+                        ((FindActiveUsersActivity) context).finish();
+                    }else {
+                        Toast.makeText(context,"No Internet",Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else {
                     Log.d("Adapter","user already present");
@@ -102,5 +108,17 @@ public class UserInContactAdapter extends RecyclerView.Adapter<UserInContactAdap
             UserConnectionRef = FirebaseDatabase.getInstance().getReference("userconnection");
 
         }
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Network is present and connected
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 }

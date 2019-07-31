@@ -50,6 +50,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
     public void onBindViewHolder(@NonNull final ConnectionViewHolder holder, final int position) {
         holder.profilepicImageView.setImageResource(R.drawable.user);
         DatabaseReference connectedToUserInfoRef = FirebaseDatabase.getInstance().getReference("userinfo").child(connectionsList.get(position).getConnectedTo());
+        connectedToUserInfoRef.keepSynced(true);
         connectedToUserInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -103,6 +104,7 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
             holder.paystatusTextView.setTextColor(mCtx.getResources().getColor(R.color.green));
         } else {
             holder.paystatusTextView.setText("All settled up!");
+            holder.paystatusTextView.setTextColor(mCtx.getResources().getColor(R.color.grey));
         }
     }
 

@@ -113,6 +113,7 @@ public class UpdateContactDb {
     private void getConnectionsList() {
         String authedUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final DatabaseReference userconnectionCurrentUserDbr = FirebaseDatabase.getInstance().getReference("userconnection").child(authedUserUID);
+        //userconnectionCurrentUserDbr.keepSynced(true);
         userconnectionCurrentUserDbr.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {

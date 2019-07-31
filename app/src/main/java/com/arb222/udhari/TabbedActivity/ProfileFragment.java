@@ -2,6 +2,7 @@ package com.arb222.udhari.TabbedActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,8 +17,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.arb222.udhari.Authentication.PhoneNoEntryActivity;
+import com.arb222.udhari.ContactDB.ContactDbHelper;
 import com.arb222.udhari.R;
 import com.arb222.udhari.UpdateProfile;
 import com.arb222.udhari.POJO.UserInfo;
@@ -35,6 +38,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import static com.arb222.udhari.Base.SHAREDPREF_AUTHUSERDISPLAYNAME;
 import static com.arb222.udhari.Base.SHAREDPREF_AUTHUSERPHONENUMBER;
 import static com.arb222.udhari.Base.SHAREDPREF_FCMTOKEN;
+import static com.arb222.udhari.ContactDB.ContactContract.ContactEntry.TABLE_NAME;
 
 public class ProfileFragment extends Fragment {
     View view;
@@ -59,7 +63,7 @@ public class ProfileFragment extends Fragment {
         signoutImageButton = (CircleImageView) view.findViewById(R.id.signout_imageviewbutton);
         profilePicImageView = (ImageView) view.findViewById(R.id.profile_pic_imageview);
         userinfoDatabaseReference = FirebaseDatabase.getInstance().getReference("userinfo");
-        //userinfoDatabaseReference.keepSynced(true);
+        userinfoDatabaseReference.keepSynced(true);
         currentUserInfo = new UserInfo();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         final String currentUserUid = currentUser.getUid();
@@ -88,7 +92,15 @@ public class ProfileFragment extends Fragment {
         signoutImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String authUserUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference("fcmtoken").child(authUserUid);
+                ref.keepSynced(true);
+                ref.child("token").setValue("null");
+                ContactDbHelper mDbHelper = new ContactDbHelper(getActivity());
+                SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                db.delete(TABLE_NAME,null,null);
                 FirebaseAuth.getInstance().signOut();
+                Toast.makeText(getActivity(),"Signed Out",Toast.LENGTH_SHORT).show();
                 getActivity().finish();
                 startActivity(new Intent(getActivity(), PhoneNoEntryActivity.class));
             }
@@ -110,7 +122,7 @@ public class ProfileFragment extends Fragment {
             case 3:
                 nameTextView.setText(currentUserInfo.getFirstName() + " " + currentUserInfo.getLastName());
                 Picasso.get().load(currentUserInfo.getProfilePictureLink())
-                        .placeholder(R.mipmap.ic_launcher)
+                        .placeholder(R.drawable.user)
                         .fit()
                         .centerCrop()
                         .into(profilePicImageView);

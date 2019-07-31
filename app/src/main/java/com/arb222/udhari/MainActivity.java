@@ -125,6 +125,7 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "run: Updating FCM token on Firebase");
             String token = pref.getString(SHAREDPREF_FCMTOKEN,"NA");
             DatabaseReference fcmtokenRef = FirebaseDatabase.getInstance().getReference("fcmtoken");
+            fcmtokenRef.keepSynced(true);
             fcmtokenRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("token").setValue(token);
         }
     }

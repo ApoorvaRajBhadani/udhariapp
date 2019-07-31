@@ -124,6 +124,7 @@ public class NewTransactionActivity extends AppCompatActivity {
 
     private String updateTransaction(Transaction transaction,String connId){
         DatabaseReference conIdref = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
+        conIdref.keepSynced(true);
         String transactionId = conIdref.push().getKey();
         transaction.setTransactionId(transactionId);
         conIdref.child(transactionId).setValue(transaction);

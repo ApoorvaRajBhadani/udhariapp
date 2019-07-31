@@ -13,5 +13,7 @@
     <color name="secondaryTextColor">#ffffff</color>
     <color name="erroeColor">#f44336</color>
     <color name="green">#4caf50</color>
+    <color name="grey">#757575</color>
+
 
 </resources>

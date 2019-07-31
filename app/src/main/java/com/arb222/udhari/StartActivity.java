@@ -7,7 +7,6 @@ import androidx.core.app.ActivityCompat;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.widget.Toast;
 
@@ -15,7 +14,7 @@ import com.arb222.udhari.Authentication.PhoneNoEntryActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-public class StartingActivity extends AppCompatActivity {
+public class StartActivity extends AppCompatActivity {
     public final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
 
@@ -29,11 +28,11 @@ public class StartingActivity extends AppCompatActivity {
             FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
             if (currentUser != null) {
                 //Toast.makeText(MainActivity.this,FirebaseAuth.getInstance().getCurrentUser().getUid(),Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(StartingActivity.this, MainActivity.class);
+                Intent intent = new Intent(StartActivity.this, MainActivity.class);
                 startActivity(intent);
 
             } else {
-                Intent intent = new Intent(StartingActivity.this, PhoneNoEntryActivity.class);
+                Intent intent = new Intent(StartActivity.this, PhoneNoEntryActivity.class);
                 startActivity(intent);
             }
             finish();
@@ -57,11 +56,11 @@ public class StartingActivity extends AppCompatActivity {
                     FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
                     if (currentUser != null) {
                         //Toast.makeText(MainActivity.this,FirebaseAuth.getInstance().getCurrentUser().getUid(),Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(StartingActivity.this, MainActivity.class);
+                        Intent intent = new Intent(StartActivity.this, MainActivity.class);
                         startActivity(intent);
 
                     } else {
-                        Intent intent = new Intent(StartingActivity.this, PhoneNoEntryActivity.class);
+                        Intent intent = new Intent(StartActivity.this, PhoneNoEntryActivity.class);
                         startActivity(intent);
                     }
                     finish();
