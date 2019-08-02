@@ -16,6 +16,7 @@ import com.arb222.udhari.NewTransactionActivity;
 import com.arb222.udhari.Notification.NotificationAdapter;
 import com.arb222.udhari.Notification.NotificationModel;
 import com.arb222.udhari.POJO.Transaction;
+import com.arb222.udhari.POJO.UserConnection;
 import com.arb222.udhari.POJO.UserInfo;
 import com.arb222.udhari.R;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
@@ -42,6 +43,8 @@ public class ConnectionActivity extends AppCompatActivity {
     private TextView toPayTextView;
     private RecyclerView txnRecyclerView;
     private FloatingActionButton fab;
+    private double meToPay;
+    private String displayName;
 
     private List<TransactionModel> txnList = new ArrayList<>();
 
@@ -53,11 +56,11 @@ public class ConnectionActivity extends AppCompatActivity {
 
         //Getting Intent extras
         Bundle bundle = getIntent().getExtras();
-        final String displayName = bundle.getString("display_name"),
-        connectionUid = bundle.getString("connection_uid"),
+        displayName = bundle.getString("display_name");
+        final String connectionUid = bundle.getString("connection_uid"),
         connId = bundle.getString("conn_id");
         final int myType = bundle.getInt("my_type");
-        double meToPay = bundle.getDouble("me_to_pay");
+        meToPay = bundle.getDouble("me_to_pay");
 
 
 
@@ -77,13 +80,22 @@ public class ConnectionActivity extends AppCompatActivity {
 
 
         //Setting up UI elements data
-        if(meToPay>0){
-            toPayTextView.setText("You have to pay "+displayName+" ₹"+meToPay);
-        }else if(meToPay<0){
-            toPayTextView.setText(displayName+ " have to pay you ₹"+Math.abs(meToPay));
-        }else {
-            toPayTextView.setText("You both are settled up");
-        }
+        initPay();
+        DatabaseReference conRef = FirebaseDatabase.getInstance().getReference("userconnection");
+        conRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child(connId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                UserConnection pojoObj = dataSnapshot.getValue(UserConnection.class);
+                meToPay = pojoObj.getPay();
+                initPay();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +134,7 @@ public class ConnectionActivity extends AppCompatActivity {
         //Getting data for the recycler view
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference("connectiontxns").child(connId);
         ref.keepSynced(true);
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+        ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 txnList.clear();
@@ -164,6 +176,16 @@ public class ConnectionActivity extends AppCompatActivity {
         });
         txnRecyclerView.setLayoutManager(new LinearLayoutManager(ConnectionActivity.this));
         txnRecyclerView.setAdapter(adapter);
+    }
+
+    private void initPay() {
+        if(meToPay>0){
+            toPayTextView.setText("You have to pay "+displayName+" ₹"+meToPay);
+        }else if(meToPay<0){
+            toPayTextView.setText(displayName+ " have to pay you ₹"+Math.abs(meToPay));
+        }else {
+            toPayTextView.setText("You both are settled up");
+        }
     }
 }
 

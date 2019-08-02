@@ -28,26 +28,55 @@ import java.util.List;
 
 public class UpdateContactDb {
 
+    private Context mCtx;
     private ContactDbHelper mDbHelper;
     private List<String> connectionList = new ArrayList<>();
     public final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
 
     public void initializeContactDb(Context context) {
         mDbHelper = new ContactDbHelper(context);
-        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
+        mCtx = context;
 
         //getting Contact Data from user's phone
         getConnectionsList();
         //First initializing User's Country ISO prefix
+    }
+
+    private void getUserDetails(final String displayName, final String phoneNumber) {
+
+    }
+
+    private void getConnectionsList() {
+        String authedUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final DatabaseReference userconnectionCurrentUserDbr = FirebaseDatabase.getInstance().getReference("userconnection").child(authedUserUID);
+        //userconnectionCurrentUserDbr.keepSynced(true);
+        userconnectionCurrentUserDbr.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    connectionList.add(snapshot.child("connectionId").getValue().toString());
+                }
+                loadData();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void loadData(){
+        final SQLiteDatabase db = mDbHelper.getWritableDatabase();
         String iso = "IN";
-        TelephonyManager telephonyManager = (TelephonyManager) context.getApplicationContext().getSystemService(context.getApplicationContext().TELEPHONY_SERVICE);
+        TelephonyManager telephonyManager = (TelephonyManager) mCtx.getApplicationContext().getSystemService(mCtx.getApplicationContext().TELEPHONY_SERVICE);
         if (telephonyManager.getNetworkCountryIso() != null) {
             if (!telephonyManager.getNetworkCountryIso().toString().equals(""))
                 iso = telephonyManager.getNetworkCountryIso().toString();
         }
         String ISOprefix = CountryToPhonePrefix.getPhone(iso);
 
-        Cursor phones = context.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
+        Cursor phones = mCtx.getContentResolver().query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI, null, null, null, null);
         while (phones.moveToNext()) {
             final String displayName = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME));
             String phoneNumber = phones.getString(phones.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
@@ -105,29 +134,6 @@ public class UpdateContactDb {
             });
         }
         phones.close();
-    }
-
-    private void getUserDetails(final String displayName, final String phoneNumber) {
-
-    }
-
-    private void getConnectionsList() {
-        String authedUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        final DatabaseReference userconnectionCurrentUserDbr = FirebaseDatabase.getInstance().getReference("userconnection").child(authedUserUID);
-        //userconnectionCurrentUserDbr.keepSynced(true);
-        userconnectionCurrentUserDbr.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    connectionList.add(snapshot.child("connectionId").getValue().toString());
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
     }
 
 

@@ -25,10 +25,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -51,8 +54,6 @@ public class MainActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ContactDbHelper contactDbHelper;
     private SharedPreferences pref;
-
-
 
 
 //    @Override
@@ -86,25 +87,31 @@ public class MainActivity extends AppCompatActivity {
 
         SQLiteDatabase contactDb = contactDbHelper.getReadableDatabase();
         Cursor userInContactDb = contactDb.query(ContactContract.ContactEntry.TABLE_NAME, null, null, null, null, null, null);
-        if(userInContactDb.getCount()==0){
-            Toast.makeText(this,"Loading Contacts",Toast.LENGTH_SHORT).show();
-        UpdateContactDb updateContactDb = new UpdateContactDb();
-        updateContactDb.initializeContactDb(this);
-        }else {
-            //todo:Do contact refresh in background
-            //updatingContactThread.run();
-            startUpdateContacts();
+        if (userInContactDb.getCount() == 0) {
+            if (isNetworkAvailable()) {
+                Toast.makeText(this, "Loading Contacts", Toast.LENGTH_SHORT).show();
+                UpdateContactDb updateContactDb = new UpdateContactDb();
+                updateContactDb.initializeContactDb(this);
+            } else {
+                Toast.makeText(MainActivity.this, "No Internet", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            if (isNetworkAvailable()) {
+                //todo:Do contact refresh in background
+                //updatingContactThread.run();
+                startUpdateContacts();
+            }
         }
         userInContactDb.close();
     }
 
 
-    public void startUpdateContacts(){
+    public void startUpdateContacts() {
         UpdateContactRunnable updateContactRunnable = new UpdateContactRunnable();
         new Thread(updateContactRunnable).start();
     }
 
-    class UpdateContactRunnable implements Runnable{
+    class UpdateContactRunnable implements Runnable {
         @Override
         public void run() {
             Log.d(TAG, "run: Updating contacts");
@@ -113,17 +120,17 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startUpdateFCMTokenFirebase(){
+    private void startUpdateFCMTokenFirebase() {
         UpdateFCMTokenFirebaseRunnable fcmRunnable = new UpdateFCMTokenFirebaseRunnable();
         new Thread(fcmRunnable).start();
 
     }
 
-    class UpdateFCMTokenFirebaseRunnable implements Runnable{
+    class UpdateFCMTokenFirebaseRunnable implements Runnable {
         @Override
         public void run() {
             Log.d(TAG, "run: Updating FCM token on Firebase");
-            String token = pref.getString(SHAREDPREF_FCMTOKEN,"NA");
+            String token = pref.getString(SHAREDPREF_FCMTOKEN, "NA");
             DatabaseReference fcmtokenRef = FirebaseDatabase.getInstance().getReference("fcmtoken");
             fcmtokenRef.keepSynced(true);
             fcmtokenRef.child(FirebaseAuth.getInstance().getCurrentUser().getUid()).child("token").setValue(token);
@@ -151,6 +158,18 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager manager =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = manager.getActiveNetworkInfo();
+        boolean isAvailable = false;
+        if (networkInfo != null && networkInfo.isConnected()) {
+            // Network is present and connected
+            isAvailable = true;
+        }
+        return isAvailable;
     }
 
 }

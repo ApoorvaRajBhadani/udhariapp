@@ -10,6 +10,16 @@ android {
         versionName "0.9"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    //Signing configurations for build variants "release"
+    signingConfigs {
+        release {
+            storeFile file("C:/Users/Apoorva Raj Bhadani/AndroidStudioProjects/UdhariApp/keystore.jks")
+            storePassword "apoorva@217"
+            keyAlias "key0"
+            keyPassword "apoorva@217"
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false
