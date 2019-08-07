@@ -54,13 +54,17 @@ public class ConnectionAdapter extends RecyclerView.Adapter<ConnectionAdapter.Co
         connectedToUserInfoRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                UserInfo connectedToUserInfo = dataSnapshot.getValue(UserInfo.class);
-                if (connectedToUserInfo.getProfileStatus() == 3) {
-                    Picasso.get().load(connectedToUserInfo.getProfilePictureLink())
-                            .placeholder(R.drawable.user)
-                            .fit()
-                            .centerCrop()
-                            .into(holder.profilepicImageView);
+                try {
+                    UserInfo connectedToUserInfo = dataSnapshot.getValue(UserInfo.class);
+                    if (connectedToUserInfo.getProfileStatus() == 3) {
+                        Picasso.get().load(connectedToUserInfo.getProfilePictureLink())
+                                .placeholder(R.drawable.user)
+                                .fit()
+                                .centerCrop()
+                                .into(holder.profilepicImageView);
+                    }
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onDataChange: NullPointerException");
                 }
             }
 

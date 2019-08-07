@@ -32,6 +32,7 @@ public class UpdateContactDb {
     private ContactDbHelper mDbHelper;
     private List<String> connectionList = new ArrayList<>();
     public final int MY_PERMISSIONS_REQUEST_READ_CONTACTS = 1;
+    private static final String TAG = "UpdateContactDb";
 
     public void initializeContactDb(Context context) {
         mDbHelper = new ContactDbHelper(context);
@@ -86,10 +87,16 @@ public class UpdateContactDb {
             phoneNumber = phoneNumber.replace(")", "");
             phoneNumber = phoneNumber.replace("-", "");
 
-            if (!String.valueOf(phoneNumber.charAt(0)).equals("+"))
-                phoneNumber = ISOprefix + phoneNumber;
+            try {
+                if (!String.valueOf(phoneNumber.charAt(0)).equals("+"))
+                    phoneNumber = ISOprefix + phoneNumber;
+            }catch (NullPointerException e){
+                Log.d(TAG, "loadData: NullPointerException in phoneNumber.charAt(0)");
+                continue;
+            }
 
             getUserDetails(displayName, phoneNumber);
+
             DatabaseReference userinfoDbr = FirebaseDatabase.getInstance().getReference().child("userinfo");
             final String authedUserUID = FirebaseAuth.getInstance().getCurrentUser().getUid();
             Query query = userinfoDbr.orderByChild("phoneNumber").equalTo(phoneNumber);

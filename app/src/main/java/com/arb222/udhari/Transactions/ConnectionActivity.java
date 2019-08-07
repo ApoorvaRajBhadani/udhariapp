@@ -86,7 +86,12 @@ public class ConnectionActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 UserConnection pojoObj = dataSnapshot.getValue(UserConnection.class);
-                meToPay = pojoObj.getPay();
+                try {
+                    meToPay = pojoObj.getPay();
+                    
+                }catch (NullPointerException e){
+                    Log.d(TAG, "onDataChange: NullPointerExc in new pay amount conn activity");
+                }
                 initPay();
             }
 

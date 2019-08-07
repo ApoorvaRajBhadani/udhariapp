@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1083766126255-i9qqj97ia0locun95se4hknnlg4kd1nq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.arb222.udhari",
+            "certificate_hash": "23dd6b210059082cfdd94eb046929b77be840984"
+          }
+        },
+        {
           "client_id": "1083766126255-r7g3ukka371i9is8a8anif1s4a244n88.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

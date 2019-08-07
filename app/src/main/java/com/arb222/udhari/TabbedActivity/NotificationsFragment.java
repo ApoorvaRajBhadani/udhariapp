@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ import java.util.List;
 public class NotificationsFragment extends Fragment {
     View view;
     private RecyclerView notificationRecyclerView;
-
+    private static final String TAG = "NotificationsFragment";
     private List<NotificationModel> notificationList = new ArrayList<>();
     ContactDbHelper contactDbHelper;
     String dn = "Name unsaved";
@@ -82,8 +83,11 @@ public class NotificationsFragment extends Fragment {
                         connectedToUserInfoRef.child("phoneNumber").addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                dn = dataSnapshot.getValue().toString();
-
+                                try {
+                                    dn = dataSnapshot.getValue().toString();
+                                }catch (NullPointerException e){
+                                    Log.d(TAG, "onDataChange: No number found to be displayed in notif display name");
+                                }
                             }
 
                             @Override
@@ -94,6 +98,7 @@ public class NotificationsFragment extends Fragment {
                         //todo: not working
                         displayName = dn;
                         addToList(newNotification, displayName);
+                        dn = "Name unsaved";
                     }
                     contactData.close();
 

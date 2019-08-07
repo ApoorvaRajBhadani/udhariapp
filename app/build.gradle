@@ -14,7 +14,7 @@ android {
     //Signing configurations for build variants "release"
     signingConfigs {
         release {
-            storeFile file("C:/Users/Apoorva Raj Bhadani/AndroidStudioProjects/UdhariApp/keystore.jks")
+            storeFile file('C:\\Users\\Apoorva Raj Bhadani\\AndroidStudioProjects\\UdhariApp\\keystore.jks')
             storePassword "apoorva@217"
             keyAlias "key0"
             keyPassword "apoorva@217"
@@ -24,6 +24,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 }
